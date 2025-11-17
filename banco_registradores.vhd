@@ -75,7 +75,7 @@ decod: decod_5_32 port map (
     resultado_decod => saida_decod
 );
 
-reg: registrador_32 portr map(
+reg: registrador_32 port map(
     enable => saida_decod,
     clk => clk,
 
@@ -85,3 +85,4 @@ end Behavioral;
 
 -- "C:\ghdl\bin\ghdl.exe" -a "nome"  --> compila o arquivo isoladamente (se depender de outro(s) componente(s), tem que compilar -todos- ele(s) antes)
 -- & "C:\ghdl\bin\ghdl.exe" -a *.vhd  --> compila todos os arquivos de uma vez
+
