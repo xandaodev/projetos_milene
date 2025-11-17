@@ -33,7 +33,7 @@ use work.tipo.all; --atualizacoes, pesquisei aqui e parece que tem que ter essa 
 entity banco_registradores is
     port(
         clk, escreverReg : in std_logic;
-        dadoEscrita : in_std_logic_vector(0 to 31);
+        dadoEscrita : in std_logic_vector(0 to 31);
         endEscrita : in std_logic_vector (0 to 4);
 
         endL1 : in std_logic_vector(4 downto 0);
@@ -71,7 +71,7 @@ architecture Behavioral of banco_registradores is
 
 --FIOS
 signal saida_decod : std_logic_vector (0 to 31);--saida dos decods, entra nos enables
-signal saida_32regs : std_logic_vector (0 to 31); -- saida dos regs, entra nos muxes
+signal saida_32regs : tipo_vetor_de_palavras (0 to 31); -- saida dos regs, entra nos muxes
 
 begin
 
@@ -84,7 +84,7 @@ decod: decod_5_32 port map (
 
 --SEGUNDA coluna - 32 registradores
 
-gen_registradores : for i in 0 to 32 generate
+gen_registradores : for i in 0 to 31 generate
     inst_reg : registrador_32 port map(
         preset => '0';
         clear =>'0';
@@ -96,14 +96,14 @@ gen_registradores : for i in 0 to 32 generate
 
 -- TERCEIRA coluna,  muxes
 muxL1 : mux32x32 port map(
-    E => saida_32_regs;
-    Sel => endL1;
+    E => saida_32_regs,
+    Sel => endL1,
     Saida => dadoL1
 );
 
 muxL2 : mux32x32 port map(
-    E => saida_32_regs;
-    Sel => endL2;
+    E => saida_32_regs,
+    Sel => endL2,
     Saida => dadoL2
 );
         
@@ -114,6 +114,7 @@ end Behavioral;
 
 -- "C:\ghdl\bin\ghdl.exe" -a "nome"  --> compila o arquivo isoladamente (se depender de outro(s) componente(s), tem que compilar -todos- ele(s) antes)
 -- & "C:\ghdl\bin\ghdl.exe" -a *.vhd  --> compila todos os arquivos de uma vez
+
 
 
 
