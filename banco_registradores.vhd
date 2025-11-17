@@ -31,9 +31,15 @@ use IEEE.STD_LOGIC_1164.ALL;
 
 entity banco_registradores is
     port(
-        clk, escreverReg, dadoEscrita : in std_logic;
+        clk, escreverReg : in std_logic;
+        dadoEscrita : in_std_logic_vector(0 to 31);
         endEscrita : in std_logic_vector (0 to 4);
-        dadoL1, dadoL2 : out std_logic
+
+        endL1 : in std_logic_vector(4 downto 0);
+        endL2 : in std_logic_vector(4 downto 0);
+
+        dadoL1 : out std_logic_vector(31 downto 0); 
+        dadoL2 : out std_logic_vector(31 downto 0)
     );
 end banco_registradores;
 
@@ -56,15 +62,15 @@ architecture Behavioral of banco_registradores is
 
     component mux_32 is
         port(
-            e_mux_32 : in std_logic_vector (0 to 31);
-            sel : in std_logic_vector (0 to 4);
-            saida_mux_32 : out std_logic
+            E : in tipo_vetor_de_palavras(0 to 31);
+            Sel : in std_logic_vector(4 downto 0);
+            Saida : out tipo_palavra
         );
     end component;
 
 --FIOS
-signal saida_decod : std_logic_vector (0 to 31);
-signal saida_32regs : std_logic_vector (0 to 31); 
+signal saida_decod : std_logic_vector (0 to 31);--saida dos decods, entra nos enables
+signal saida_32regs : std_logic_vector (0 to 31); -- saida dos regs, entra nos muxes
 
 begin
 
@@ -75,6 +81,24 @@ decod: decod_5_32 port map (
     resultado_decod => saida_decod
 );
 
+--SEGUNDA coluna - 32 registradores
+
+ge_registradores : for i in 0 to 32 generate
+    inst_reg : registrador_32 port map(
+        preset => '0';
+        clear =>'0';
+        enable => saida_decod(i);
+        e_reg => dadoEscrita;
+        saida_reg => saida32_regs(i)
+        );
+    end generate;
+        
+
+
+
+
+
+    
 reg: registrador_32 port map(
     enable => saida_decod,
     clk => clk,
@@ -85,4 +109,5 @@ end Behavioral;
 
 -- "C:\ghdl\bin\ghdl.exe" -a "nome"  --> compila o arquivo isoladamente (se depender de outro(s) componente(s), tem que compilar -todos- ele(s) antes)
 -- & "C:\ghdl\bin\ghdl.exe" -a *.vhd  --> compila todos os arquivos de uma vez
+
 
