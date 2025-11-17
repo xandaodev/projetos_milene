@@ -13,7 +13,7 @@ entity mux32x32 is
 end mux32x32;
 
 architecture arq of mux32x32 is
-    component mux32 is
+    component mux_32 is
         port (
             E : in std_logic_vector(0 to 31);
             Sel : in std_logic_vector(4 downto 0);
@@ -30,10 +30,11 @@ begin
             matriz_invertida(i)(j) <= E(j)(i);
         end generate;
         
-    	mux : mux32 port map (
+    	mux : mux_32 port map (
         	E => matriz_invertida(i),
             Sel => Sel,
             Saida => Saida(i)
         );
     end generate;
+
 end arq;
