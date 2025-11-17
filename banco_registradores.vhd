@@ -60,7 +60,7 @@ architecture Behavioral of banco_registradores is
         );
     end component;
 
-    component mux_32 is
+    component mux32x32 is --aqui tava o mux_32, mas na verdade o que vamos usar é o que a millene postou, mux32x32
         port(
             E : in tipo_vetor_de_palavras(0 to 31);
             Sel : in std_logic_vector(4 downto 0);
@@ -83,31 +83,36 @@ decod: decod_5_32 port map (
 
 --SEGUNDA coluna - 32 registradores
 
-ge_registradores : for i in 0 to 32 generate
+gen_registradores : for i in 0 to 32 generate
     inst_reg : registrador_32 port map(
         preset => '0';
         clear =>'0';
         enable => saida_decod(i);
         e_reg => dadoEscrita;
         saida_reg => saida32_regs(i)
-        );
+);
     end generate;
+
+-- TERCEIRA coluna,  muxes
+muxL1 : mux32x32 port map(
+    E => saida_32_regs;
+    Sel => endL1;
+    Saida => dadoL1
+);
+
+muxL2 : mux32x32 port map(
+    E => saida_32_regs;
+    Sel => endL2;
+    Saida => dadoL2
+);
         
 
-
-
-
-
-    
-reg: registrador_32 port map(
-    enable => saida_decod,
-    clk => clk,
-
-);
+--confere ai e ve se ta certo amor <3
 
 end Behavioral;
 
 -- "C:\ghdl\bin\ghdl.exe" -a "nome"  --> compila o arquivo isoladamente (se depender de outro(s) componente(s), tem que compilar -todos- ele(s) antes)
 -- & "C:\ghdl\bin\ghdl.exe" -a *.vhd  --> compila todos os arquivos de uma vez
+
 
 
