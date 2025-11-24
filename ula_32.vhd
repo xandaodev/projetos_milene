@@ -31,11 +31,11 @@ use IEEE.STD_LOGIC_1164.ALL;
 
 entity ula_32 is
 	port(
-		a : in std_logic_vector (0 to 31);
-		b : in std_logic_vector (0 to 31);
+		a : in std_logic_vector (31 downto 0); -- mudei pra downto
+        b : in std_logic_vector (31 downto 0); -- mudei pra downto
 		Ainverte, Binverte : in std_logic;
 		op : in std_logic_vector(1 downto 0);--alexandre - corrigi auqi pra um vetor de 2 
-		result : out std_logic_vector (0 to 31);
+		result : out std_logic_vector (31 downto 0); -- mudei pra downto
 		zero : out std_logic
 	);
 end ula_32;
@@ -54,12 +54,12 @@ architecture Behavioral of ula_32 is
 --OR 32 ENTRADAS
 	component porta_or_32 is
     port(
-    	e : in std_logic_vector (0 to 31);
+    	e : in std_logic_vector (31 downto 0);--corrigido para downto
 		saida : out std_logic
     );
     end component;
    
-signal vaivem: std_logic_vector(0 to 31);
+signal vaivem: std_logic_vector(31 downto 0);--mudei aqui tmb
 begin
 
 --PRIMEIRA ULA
@@ -121,4 +121,5 @@ resultado_or_32: porta_or_32 port map(
 
 
 end Behavioral;
+
 
