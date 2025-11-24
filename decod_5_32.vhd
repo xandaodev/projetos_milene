@@ -80,7 +80,8 @@ gen_decods0 : for i in 0 to 3 generate
 			sel => saida_decod0(i),
 			e(0) => e_decod(0),
 			e(1) => e_decod(1),
-			resultado_4 => resultado_decod(4*i to 4*i+3)
+			--resultado_4 => resultado_decod(4*i to 4*i+3)
+			resultado_4 => resultado_decod(4*i+3 downto 4*i) -- alexandre - mudança necessaria devido a outras nudanças
 );
 end generate;
 
@@ -89,10 +90,12 @@ gen_decods1 : for i in 0 to 3 generate
 			sel => saida_decod1(i),
 			e(0) => e_decod(0),
 			e(1) => e_decod(1),
-			resultado_4 => resultado_decod(4*i+16 to 4*i+19)
+			--resultado_4 => resultado_decod(4*i+16 to 4*i+19)
+			resultado_4 => resultado_decod(4*i+19 downto 4*i+16) -- alexandre - mudança necessaria devido a outras nudanças
 );
 end generate;
 
 
 end Behavioral;
+
 
