@@ -31,7 +31,7 @@ use IEEE.STD_LOGIC_1164.ALL;
 
 entity porta_or_32 is
 	port(
-		e : in std_logic_vector (0 to 31);
+		e : in std_logic_vector (31 downto 0); -- alexandrei - mudei pra downto 0
 		saida : out std_logic
 	);
 end porta_or_32;
@@ -53,3 +53,4 @@ begin
 	
 	saida <= saidaSegundaCamada(0) or saidaSegundaCamada(1);
 end Behavioral;
+
