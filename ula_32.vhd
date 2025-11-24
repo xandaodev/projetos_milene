@@ -33,7 +33,8 @@ entity ula_32 is
 	port(
 		a : in std_logic_vector (0 to 31);
 		b : in std_logic_vector (0 to 31);
-		Ainverte, Binverte, op : in std_logic;
+		Ainverte, Binverte : in std_logic;
+		op : in std_logic_vector(1 downto 0);--alexandre - corrigi auqi pra um vetor de 2 
 		result : out std_logic_vector (0 to 31);
 		zero : out std_logic
 	);
@@ -44,7 +45,8 @@ architecture Behavioral of ula_32 is
 --ULA 1 BIT
 	component ula1bit is
 		port(
-			A_ula, B_ula, vem1_ula, less, Ainverte, Binverte, op_ula : in std_logic_vector(1 downto 0);
+			A_ula, B_ula, vem1_ula, less, Ainverte, Binverte : in std_logic;
+			op_ula : in std_logic_vector(1 downto 0); -- alexandre - corrigido para 2 bits
 			vai1_ula, resultado_ula, set_ula : out std_logic
 		);
 	end component;
@@ -105,19 +107,18 @@ ula_31: ula1bit port map(
     
     A_ula => a(31),
     B_ula => b(31),
-    less => 0,
+    less => '0',
    
     set_ula => vaivem(31),	--só muda isso
     resultado_ula => result(31)
 );
 
 --RESULTADO FINAL
-resultado: porta_or_32 port map(
-  gen_resultado : for j in 0 to 31 generate
-      e(j) => result(j);
-  );
-  end generate;
-  saida => zero;
+resultado_or_32: porta_or_32 port map(
+  e => result, 
+  saida => zero
+);
 
 
 end Behavioral;
+
