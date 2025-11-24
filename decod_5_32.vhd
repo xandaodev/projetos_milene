@@ -33,7 +33,7 @@ entity decod_5_32 is
 port(
 	e_decod : in std_logic_vector(4 downto 0);
 	sel : in std_logic;
-	resultado_decod : out std_logic_vector(0 to 31)
+	resultado_decod : out std_logic_vector(31 downto 0)--alexandre  - mudei aqui
 );
 end decod_5_32;
 
@@ -95,3 +95,4 @@ end generate;
 
 
 end Behavioral;
+
