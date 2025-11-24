@@ -34,7 +34,7 @@ entity banco_registradores is
     port(
         clk, escreverReg : in std_logic;
         dadoEscrita : in std_logic_vector (31 downto 0); -- alexandre - mudei pra down to 
-        endEscrita : in std_logic_vector (0 to 4);
+        endEscrita : in std_logic_vector (4 downto 0); -- mudei
 
         endL1 : in std_logic_vector(4 downto 0);
         endL2 : in std_logic_vector(4 downto 0);
@@ -47,7 +47,7 @@ end banco_registradores;
 architecture Behavioral of banco_registradores is
     component decod_5_32 is
         port(
-            e_decod : in std_logic_vector(0 to 4);
+            e_decod : in std_logic_vector(4 downto 0);  -- mudei pra down to 
             sel : in std_logic;
             resultado_decod : out std_logic_vector(31 downto 0) -- alexandre - mudei pra downto
         );
@@ -55,9 +55,9 @@ architecture Behavioral of banco_registradores is
 
     component registrador_32 is
         port(
-            e_reg : in std_logic_vector (0 to 31);
+            e_reg : in std_logic_vector (31 downto 0);--mudei
             clk, preset, clear, enable : in std_logic;
-            saida_reg : out std_logic_vector (0 to 31)
+            saida_reg : out std_logic_vector (31 downto 0)--mudei
         );
     end component;
 
@@ -70,8 +70,8 @@ architecture Behavioral of banco_registradores is
     end component;
 
 --FIOS
-signal saida_decod : std_logic_vector (0 to 31);--saida dos decods, entra nos enables
-signal saida_32regs : tipo_vetor_de_palavras (0 to 31); -- saida dos regs, entra nos muxes
+signal saida_decod : std_logic_vector (31 downto 0);--saida dos decods, entra nos enables -- mudei
+signal saida_32regs : tipo_vetor_de_palavras (31 downto 0); -- saida dos regs, entra nos muxes -- mudei down to 
 
 begin
 
@@ -86,11 +86,11 @@ decod: decod_5_32 port map (
 
 gen_registradores : for i in 0 to 31 generate
     inst_reg : registrador_32 port map(
-        preset => '0';
-        clear =>'0';
-        enable => saida_decod(i);
-        e_reg => dadoEscrita;
-        saida_reg => saida32_regs(i)
+        preset => '0',
+        clear =>'0',
+        enable => saida_decod(i),
+        e_reg => dadoEscrita,
+        saida_reg => saida_32regs(i)
 );
     end generate;
 
@@ -114,6 +114,7 @@ end Behavioral;
 
 -- "C:\ghdl\bin\ghdl.exe" -a "nome"  --> compila o arquivo isoladamente (se depender de outro(s) componente(s), tem que compilar -todos- ele(s) antes)
 -- & "C:\ghdl\bin\ghdl.exe" -a *.vhd  --> compila todos os arquivos de uma vez
+
 
 
 
