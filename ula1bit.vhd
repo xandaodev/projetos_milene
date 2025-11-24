@@ -96,6 +96,9 @@ somador : somador_completo port map(
 s_and <= s_muxA and s_muxB;
 s_or <= s_muxA or s_muxB;
 
+--novo codigo alexandre:
+set_ula <= s_som;
+
 --mudanças alexandre
 m4bits : mux4 port map(
 	e(0) => s_or,  -- 00 = or
@@ -107,4 +110,5 @@ m4bits : mux4 port map(
 );
 
 end Behavioral;
+
 
