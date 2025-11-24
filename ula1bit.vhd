@@ -31,7 +31,7 @@ use IEEE.STD_LOGIC_1164.ALL;
 
 entity ula1bit is
 port(
-	A_ula, B_ula, vem1_ula, less, Ainverte, Binverte;
+	A_ula, B_ula, vem1_ula, less, Ainverte, Binverte : in std_logic;
 	--alexandre mudei o op_ula pra um vetor de 2 
 	op_ula : in std_logic_vector(1 downto 0);
 	vai1_ula, resultado_ula, set_ula : out std_logic
@@ -110,5 +110,6 @@ m4bits : mux4 port map(
 );
 
 end Behavioral;
+
 
 
