@@ -33,7 +33,7 @@ entity registrador_32 is
     port(
         e_reg : in std_logic_vector (31 downto 0); -- alexandre - mudei pra down to 
         clk, preset, clear, enable : in std_logic;
-        saida_reg : out std_logic_vector std_logic_vector (31 downto 0) -- alexandre - mudei pra down to 
+        saida_reg : out std_logic_vector (31 downto 0) -- alexandre - mudei pra down to 
     );
 end registrador_32;
 
@@ -61,4 +61,5 @@ end Behavioral;
 
 -- "C:\ghdl\bin\ghdl.exe" -a "nome"  --> compila o arquivo isoladamente (se depender de outro(s) componente(s), tem que compilar -todos- ele(s) antes)
 -- & "C:\ghdl\bin\ghdl.exe" -a *.vhd  --> compila todos os arquivos de uma vez
+
 
