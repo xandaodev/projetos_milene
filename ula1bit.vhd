@@ -31,7 +31,9 @@ use IEEE.STD_LOGIC_1164.ALL;
 
 entity ula1bit is
 port(
-	A_ula, B_ula, vem1_ula, less, Ainverte, Binverte, op_ula : in std_logic;
+	A_ula, B_ula, vem1_ula, less, Ainverte, Binverte;
+	--alexandre mudei o op_ula pra um vetor de 2 
+	op_ula : in std_logic_vector(1 downto 0);
 	vai1_ula, resultado_ula, set_ula : out std_logic
 );
 end ula1bit;
@@ -54,9 +56,11 @@ component somador_completo is
 	);
 	end component;
 --mux4
+	--mudança aqui nesse mux4 feito pelo alexandre
 component mux4 is
 	port(
-	A, B, C, D, op: in std_logic;
+	e: in std_logic_vector(0 to 3);
+	op: in std_logic_vector(1 downto 0);
 	resultado: out std_logic
 	);
 	end component;
@@ -92,13 +96,15 @@ somador : somador_completo port map(
 s_and <= s_muxA and s_muxB;
 s_or <= s_muxA or s_muxB;
 
+--mudanças alexandre
 m4bits : mux4 port map(
-	A => s_or,
-	B => s_and,
-	C => s_som,
-	D => less,
+	e(0) => s_or,  -- 00 = or
+	e(1) => s_and, -- 01 = and
+	e(2) => s_som, -- 10 =soma,sub
+	e(3) => less,  -- 11 =slt
 	op => op_ula,
 	resultado => resultado_ula
 );
 
 end Behavioral;
+
