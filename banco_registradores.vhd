@@ -33,7 +33,7 @@ use work.tipo.all; --atualizacoes, pesquisei aqui e parece que tem que ter essa 
 entity banco_registradores is
     port(
         clk, escreverReg : in std_logic;
-        dadoEscrita : in std_logic_vector(0 to 31);
+        dadoEscrita : in std_logic_vector (31 downto 0); -- alexandre - mudei pra down to 
         endEscrita : in std_logic_vector (0 to 4);
 
         endL1 : in std_logic_vector(4 downto 0);
@@ -49,7 +49,7 @@ architecture Behavioral of banco_registradores is
         port(
             e_decod : in std_logic_vector(0 to 4);
             sel : in std_logic;
-            resultado_decod : out std_logic_vector(0 to 31)
+            resultado_decod : out std_logic_vector(31 downto 0) -- alexandre - mudei pra downto
         );
     end component;
 
@@ -63,7 +63,7 @@ architecture Behavioral of banco_registradores is
 
     component mux32x32 is --aqui tava o mux_32, mas na verdade o que vamos usar é o que a millene postou, mux32x32
         port(
-            E : in tipo_vetor_de_palavras(0 to 31);
+            E : in tipo_vetor_de_palavras(31 downto 0); -- alexandre - mudei pra downto
             Sel : in std_logic_vector(4 downto 0);
             Saida : out tipo_palavra
         );
@@ -114,6 +114,7 @@ end Behavioral;
 
 -- "C:\ghdl\bin\ghdl.exe" -a "nome"  --> compila o arquivo isoladamente (se depender de outro(s) componente(s), tem que compilar -todos- ele(s) antes)
 -- & "C:\ghdl\bin\ghdl.exe" -a *.vhd  --> compila todos os arquivos de uma vez
+
 
 
 
