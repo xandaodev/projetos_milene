@@ -44,7 +44,7 @@ architecture Behavioral of ula_32 is
 --ULA 1 BIT
 	component ula1bit is
 		port(
-			A_ula, B_ula, vem1_ula, less, Ainverte, Binverte, op_ula : in std_logic;
+			A_ula, B_ula, vem1_ula, less, Ainverte, Binverte, op_ula : in std_logic_vector(1 downto 0);
 			vai1_ula, resultado_ula, set_ula : out std_logic
 		);
 	end component;
@@ -118,5 +118,6 @@ resultado: porta_or_32 port map(
   );
   end generate;
   saida => zero;
+
 
 end Behavioral;
