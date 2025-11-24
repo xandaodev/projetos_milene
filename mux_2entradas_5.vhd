@@ -3,7 +3,7 @@
 -- Engineer: Julia e Alexandre
 -- 
 -- Create Date:    14:35:55 11/18/2025 
--- Design Name: 
+-- Design Name:  
 -- Module Name:    mux_2entradas_5 - Behavioral 
 -- Project Name: 
 -- Target Devices: 
