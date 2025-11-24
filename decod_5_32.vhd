@@ -31,7 +31,7 @@ use IEEE.STD_LOGIC_1164.ALL;
 
 entity decod_5_32 is
 port(
-	e_decod : in std_logic_vector(0 to 4);
+	e_decod : in std_logic_vector(4 downto 0);
 	sel : in std_logic;
 	resultado_decod : out std_logic_vector(0 to 31)
 );
@@ -92,5 +92,6 @@ gen_decods1 : for i in 0 to 3 generate
 			resultado_4 => resultado_decod(4*i+16 to 4*i+19)
 );
 end generate;
+
 
 end Behavioral;
