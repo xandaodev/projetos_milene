@@ -60,6 +60,7 @@ architecture Behavioral of ula_32 is
     end component;
    
 signal vaivem: std_logic_vector(31 downto 0);--mudei aqui tmb
+signal or_result : std_logic; -- novo : sinal para a saida da porta or
 begin
 
 --PRIMEIRA ULA
@@ -116,10 +117,13 @@ ula_31: ula1bit port map(
 --RESULTADO FINAL
 resultado_or_32: porta_or_32 port map(
   e => result, 
-  saida => zero
+  saida => or_result
 );
+--alexandre mudanças
+zero <= not or_result;
 
 
 end Behavioral;
+
 
 
