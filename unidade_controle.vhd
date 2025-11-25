@@ -31,15 +31,17 @@ use IEEE.STD_LOGIC_1164.ALL;
 
 entity unidade_controle is
     port(
-        op_uc : in std_logic_vector(0 to 5); --se precisar muda pra down to
-        ALU_op : out std_logic_vector (0 to 1); --se precisar muda pra down to
+        op_uc : in std_logic_vector(5 downto 0); 
+        ALU_op : out std_logic_vector (1 downto 0); 
         reg_write, reg_dst, ALU_src, branch, mem_write, mem_toReg, jump, mem_read : out std_logic
     );
 end unidade_controle;
 
 architecture Behavioral of unidade_controle is
 
-process(op_uc)
+
+begin
+    process(op_uc)
     begin
         if op_uc = "000000" then
             ALU_op <= "10";
