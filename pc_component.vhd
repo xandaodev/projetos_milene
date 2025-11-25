@@ -1,10 +1,10 @@
 ----------------------------------------------------------------------------------
 -- Company: 
--- Engineer: Julia e Alexandre
+-- Engineer: xandao e xandona
 -- 
--- Create Date:    14:35:55 11/18/2025 
+-- Create Date:    13:49:34 11/18/2025 
 -- Design Name: 
--- Module Name:    mux_2entradas_5 - Behavioral 
+-- Module Name:    pc_ - Behavioral 
 -- Project Name: 
 -- Target Devices: 
 -- Tool versions: 
@@ -29,31 +29,62 @@ use IEEE.STD_LOGIC_1164.ALL;
 --library UNISIM;
 --use UNISIM.VComponents.all;
 
-entity mux_2entradas_5 is
-port(
-	e0_mux_2_5 : in std_logic_vector (0 to 31);
-	e1_mux_2_5 : in std_logic_vector (0 to 31);
-	sel_mux_2_5 : in std_logic;
-	saida_mux_2_5 : out std_logic_vector (0 to 31)
-);
-end mux_2entradas_5;
-
-architecture Behavioral of mux_2entradas_5 is
-component mux2 is
+entity pc is
 	port(
-		A, B, s: in std_logic;
-		resultado : out std_logic
+		ini, clk : in std_logic;
+		entrada : in std_logic_vector(31 downto 0);
+		saida : out std_logic_vector(31 dowto 0)
 	);
-end component;
+
+end pc;
+
+architecture Behavioral of pc is
+
+component ffd_borda_subida is
+    port (
+		  clear, preset : in std_logic; 
+        D, clk, enable_ffd : in std_logic;
+        Q, Qb : out std_logic
+	 );
+	 end component;
 
 begin
-gen_mux32: for i in 0 to 4 generate
-	mux : mux2 port map(
-		A => e0_mux_2_5(i),
-		B => e1_mux_2_5(i),
-		s => sel_mux_2_5,
-		resultado => saida_mux_2_5(i)
-	);
+
+--primeiros ffds
+gen_ffds : for i in 0 to 9 generate
+	ffds : ffd_borda_subida port map(	
+		clear => ini,
+		preset => '0',
+		D => entrada(i),
+		enable_ffd => '1',
+		clk => clk,
+		Q => saida(i)
+   );
 end generate;
+
+--ffd do meio(décimo)
+
+ffd_meio : ffd_borda_subida port map(
+	clear => '0',
+	preset => ini,
+	D => entrada(10),
+	enable_ffd => '1',
+	clk => clk,
+	Q => saida(10)
+);
+
+--ultimos ffds
+
+gen2_ffds : for i in 11 to 31 generate
+	ffds2 : ffd_borda_subida port map(	
+		clear => ini,
+		preset => '0',
+		D => entrada(i),
+		enable_ffd => '1',
+		clk => clk,
+		Q => saida(i)
+);
+end generate;
+
 
 end Behavioral;
