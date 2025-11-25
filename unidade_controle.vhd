@@ -32,7 +32,7 @@ use IEEE.STD_LOGIC_1164.ALL;
 entity unidade_controle is
     port(
         op_uc : in std_logic_vector(5 downto 0); 
-        ALU_op : out std_logic_vector (1 downto 0); 
+        ALU_op_uc : out std_logic_vector (1 downto 0); 
         reg_write, reg_dst, ALU_src, branch, mem_write, mem_toReg, jump, mem_read : out std_logic
     );
 end unidade_controle;
@@ -44,7 +44,7 @@ begin
     process(op_uc)
     begin
         if op_uc = "000000" then
-            ALU_op <= "10";
+            ALU_op_uc <= "10";
             reg_write <= '1';
             reg_dst <= '1';
             ALU_src <= '0';
@@ -55,7 +55,7 @@ begin
             mem_read <= '0';
 
         elsif op_uc = "001000" then
-            ALU_op <= "00";
+            ALU_op_uc <= "00";
             reg_write <= '1';
             reg_dst <= '0';
             ALU_src <= '1';
@@ -66,7 +66,7 @@ begin
             mem_read <= '0';
         
         elsif op_uc = "100011" then
-            ALU_op <= "00";
+            ALU_op_uc <= "00";
             reg_write <= '1';
             reg_dst <= '0';
             ALU_src <= '1';
@@ -77,7 +77,7 @@ begin
             mem_read <= '1';
 
         elsif op_uc = "101011" then
-            ALU_op <= "00";
+            ALU_op_uc <= "00";
             reg_write <= '0';
             --reg_dst <= '';
             ALU_src <= '1';
@@ -88,7 +88,7 @@ begin
             mem_read <= '0';
 
         elsif op_uc = "000100" then
-            ALU_op <= "01";
+            ALU_op_uc <= "01";
             reg_write <= '0';
             --reg_dst <= '';
             ALU_src <= '0';
@@ -99,7 +99,7 @@ begin
             mem_read <= '0';
 
         elsif op_uc = "000010" then
-            --ALU_op <= "";
+            --ALU_op_uc <= "";
             reg_write <= '0';
             --reg_dst <= '';
             --ALU_src <= '';
