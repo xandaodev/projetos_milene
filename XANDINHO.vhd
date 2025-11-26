@@ -137,8 +137,68 @@ end component;
         saida_32   : out std_logic_vector (31 downto 0)
     );
 end component;
+	--signal 1 :
+	signal saidaPC : std_logic_vector(1 downto 0);
+	--signal 2 :
+	signal saidaMemoInstru : std_logic_vector(5 downto 0);
+	--signal 3 :
+	signal saidaUC_regDst : std_logic;
+	--signal 4:
+	signal saidaMuxA_bancoReg : std_logic;
+	--signal 5:
+	signal saidaMuxC_writeData_bancoReg : std_logic;
+	--signal 6:
+	signal saidaUC_regWrite : std_logic;
+	--signal 7:
+	signal saidaData1_ULA : std_logic;
+	--signal 8:
+	signal saidaData2 : std_logic;
+	--signal 9:
+	signal saidaExtSinal_deslocA : std_logic;
+	--signal 10:
+	signal saidaUC_muxB : std_logic;
+	--signal 11:
+	signal saidaMuxB_ULA : std_logic;
+	--signal 12:
+	signal saidaUC_UCula : std_logic;
+	--signal 13:
+	signal saidaUCula_ULA -- mais de 1 sinal
+	--signal 14:
+	signal saidaZeroULA_and : std_logic;
+	--signal 15:
+	signal saidaULA : std_logic_vector(1 downto 0);
+	--signal 16:
+	signal saidaUC_memWrite : std_logic;
+	--signal 17:
+	signal saidaDataMem_muxC : std_logic;
+	--signal 18:
+	signal saidaUC_memRead : std_logic;
+	--signal 19:
+	signal saidaUC_memtoReg : std_logic;
+	--signal 20: (esse n tem)
+	--signal
+	--signal 21:
+	signal saidaSomadorA --acho q esse aqui vai ter q ser vetor
+	--signal 22:
+	signal saidaDeslocB_muxE --atecnao pra esse aqui, ele meio q se junta com esse de cima
+	--signal 23:
+	signal saidaDeslocA_somadorB : std_logic;
+	--signal 24:
+	signal saidaSomadorB_muxD : std_logic;
+	--signal 25:
+	signal saidaUC_branch : std_logic;
+	--signal 26:
+	signal saidaAnd_muxD : std_logic;
+	--signal 27:
+	signal saidaMuxD_muxE : std_logic;
+	--signal 28:
+	signal saidaUC_jump : std_logic;
+	--signal 29:
+	signal saidaMuxE_pc : std_logic;
 
+	
 begin
+	
 
 
 end Behavioral;
