@@ -263,8 +263,8 @@ begin
 		endL1 => saidaMemoInstru(25 downto 21),
 		endL2 => saidaMemoInstru(25 downto 21),
 		escreverReg => saidaMuxA_bancoReg, --fio 4
-		dadoEscrita => saidaMuxC_writeData_bancoReg -- fio5
-		dadoL1 => saidaData1_ULA -- fio 7
+		dadoEscrita => saidaMuxC_writeData_bancoReg, -- fio5
+		dadoL1 => saidaData1_ULA, -- fio 7
 		dadoL2 => 	saidaData2 -- aqui tem q ver pq ele vai pra dois lugares
 	    );
 
@@ -310,9 +310,9 @@ begin
 	--port map somador A
 	somador_A is somador_completo port map(
 		A => saidaPC,
-		B => '4'
-		vem1 => '0'
-		vai1 => '0'
+		B => '4',
+		vem1 => '0',
+		vai1 => '0',
 		resultado => saidaSomadorA -- fio 21
 		);
 
@@ -332,8 +332,8 @@ begin
 	somador_B is somador_completo port map(
 		A => saidaSomadorA, -- fio 21
 		B => saidaDeslocA_somadorB, -- fio 23
-		vem1 => '0'
-		vai1 => '0'
+		vem1 => '0',
+		vai1 => '0',
 		resultado => saidaSomadorB_muxD -- fio 24
 		);
 
