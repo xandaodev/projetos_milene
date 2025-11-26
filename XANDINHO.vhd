@@ -123,11 +123,11 @@ end component;
 		DebugEndereco : in std_logic_vector(31 downto 0);
 		DebugPalavra : out std_logic_vector(31 downto 0));
 end component;
---somador
-	component somador is
+--somador completo
+	component somador_completo is
 	port(
-	A, B : in std_logic;
-	vai1, saida : out std_logic
+	A, B, vem1 : in std_logic;
+	vai1, resultado : out std_logic
 	);
 end component;
 --somador completo
@@ -308,9 +308,12 @@ begin
 	    );
 
 	--port map somador A
-	somador_A is somador port map(
-		
-	
+	somador_A is somador_completo port map(
+		A => saidaPC,
+		B => '4'
+		vem1 => '0'
+		vai1 => '0'
+		resultado => saidaSomadorA -- fio 21
 		);
 
 	-- port map deslocador B
@@ -324,6 +327,16 @@ begin
 		entrada_32 => saidaExtSinal_deslocA,
 		saida_32 => saidaDeslocA_somadorB -- fio 23
 		);
+
+	--port map somador B
+	somador_B is somador_completo port map(
+		A => saidaSomadorA, -- fio 21
+		B => saidaDeslocA_somadorB, -- fio 23
+		vem1 => '0'
+		vai1 => '0'
+		resultado => saidaSomadorB_muxD -- fio 24
+		);
+
 
 	--port map muxD
 	mux_D : mux2 port map(
