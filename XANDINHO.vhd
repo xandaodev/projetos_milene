@@ -234,9 +234,10 @@ begin
 		);
 
 	--port map muxA
-	muxA : mux2 port map(
+	mux_A : mux2 port map(
 		A => saidaMemoInstru(20 downto 16),
 		B => saidaMemoInstru(15 downto 11),
+		s => saidaUC_regDst, -- fio 3
 		resultado => saidaMuxA_bancoReg
 		);
 
@@ -268,9 +269,10 @@ begin
 	    );
 
 	--port map muxB
-	muxB : mux2 port map(
+	mux_B : mux2 port map(
 		A => saidaData1_ULA, -- fio 8
 		B => saidaExtSinal_deslocA, -- fio 9, tem q ver aqui pq esse fio vai pra 2 lugares
+		s => saidaUC_muxB, --fio 10
 		resultado => saidaMuxB_ULA -- fio 11
 		);
 
@@ -297,15 +299,47 @@ begin
 		DebugPalavra =>
 		);
 
-	--port map muxc
-	muxB : mux2 port map(
+	--port map mux c
+	mux_C : mux2 port map(
 		B => saidaDataMem_muxC, -- fio 17
 		A => saidaULA, -- fio 15, tem q ver aqui pq esse fio vai pra 2 lugares
+		s => saidaUC_memtoReg, -- fio 19
 		resultado => saidaMuxC_writeData_bancoReg -- fio 5
 	    );
 
 	--port map somador A
-	somador_A is somador port map
+	somador_A is somador port map(
+		
+	
+		);
+
+	-- port map deslocador B
+	deslocador_B is delocador_2 port map(
+		entrada_32 => saidaMemoInstru(25 downto 0),
+		saida_32 => saidaDeslocB_muxE -- fio 22
+		);
+
+	-- port map deslocador A 
+	deslocador_B is delocador_2 port map(
+		entrada_32 => saidaExtSinal_deslocA,
+		saida_32 => saidaDeslocA_somadorB -- fio 23
+		);
+
+	--port map muxD
+	mux_D : mux2 port map(
+		A => saidaSomadorA, -- FIO 21
+		B => saidaSomadorB_muxD, -- FIO 24
+		s=> saidaAnd_muxD, -- fio 26
+		resultado => saidaMuxD_muxE -- fio 27
+		);
+
+	--port map muxE
+	mux_E : mux2 port map(
+		B => saidaDeslocB_muxE, -- FIO 22, SE ATENTAR AQUI PQ TEM QUE FAZER SLICE NESSE FIO
+		A => saidaMuxD_muxE, -- FIO 27
+		s=> saidaUC_jump, -- fio 28
+		resultado => saidaMuxE_pc -- fio 29
+		);
 
 	
 end Behavioral;
