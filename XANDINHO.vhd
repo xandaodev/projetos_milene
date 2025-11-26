@@ -130,6 +130,13 @@ end component;
 	vai1, saida : out std_logic
 	);
 end component;
+--somador completo
+	component somador_completo is
+	port(
+	A, B, vem1 : in std_logic;
+	vai1, resultado : out std_logic
+	);
+end component;
 --deslocador_2
 	component deslocador_2 is
     port(
