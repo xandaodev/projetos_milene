@@ -147,19 +147,19 @@ end component;
 	--signal 1 :
 	signal saidaPC : std_logic_vector(31 downto 0);
 	--signal 2 :
-	signal saidaMemoInstru : std_logic_vector(5 downto 0);
+	signal saidaMemoInstru : std_logic_vector(31 downto 0);
 	--signal 3 :
 	signal saidaUC_regDst : std_logic;
 	--signal 4:
-	signal saidaMuxA_bancoReg : std_logic;
+	signal saidaMuxA_bancoReg : std_logic_vector(4 downto 0);
 	--signal 5:
-	signal saidaMuxC_writeData_bancoReg : std_logic;
+	signal saidaMuxC_writeData_bancoReg : std_logic_vector(31 downto 0);
 	--signal 6:
 	signal saidaUC_regWrite : std_logic;
 	--signal 7:
 	signal saidaData1_ULA : std_logic_vector(31 downto 0);
 	--signal 8:
-	signal saidaData2 : : std_logic_vector(31 downto 0);
+	signal saidaData2 : std_logic_vector(31 downto 0);
 	--signal 9:
 	signal saidaExtSinal_deslocA : std_logic_vector(31 downto 0);
 	--signal 10:
@@ -169,7 +169,7 @@ end component;
 	--signal 12:
 	signal saidaUC_UCula : std_logic;
 	--signal 13:
-	signal saidaUCula_ULA -- mais de 1 sinal
+	signal saidaUCula_ULA : std_logic_vector(1 downto 0);-- mais de 1 sinal
 	--signal 14:
 	signal saidaZeroULA_and : std_logic;
 	--signal 15:
@@ -191,17 +191,17 @@ end component;
 	--signal 23:
 	signal saidaDeslocA_somadorB : std_logic_vector(31 downto 0);
 	--signal 24:
-	signal saidaSomadorB_muxD : std_logic;
+	signal saidaSomadorB_muxD : std_logic_vector(31 downto 0);
 	--signal 25:
 	signal saidaUC_branch : std_logic;
 	--signal 26:
 	signal saidaAnd_muxD : std_logic;
 	--signal 27:
-	signal saidaMuxD_muxE : std_logic;
+	signal saidaMuxD_muxE : std_logic_vector(31 downto 0);
 	--signal 28:
 	signal saidaUC_jump : std_logic;
 	--signal 29:
-	signal saidaMuxE_pc : std_logic;
+	signal saidaMuxE_pc : std_logic_vector(31 downto 0);
 
 	
 begin
