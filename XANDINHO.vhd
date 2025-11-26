@@ -205,8 +205,108 @@ end component;
 
 	
 begin
+	--port map do pc:
+	PC_reg: pc port map(
+		ini => inicializar,
+		clk => clk,
+		entrada => saidaMuxE_pc, -- 29
+		saida => saidaPC -- 1
+		);
+
+	-- port map memoria de instrucao
+	memoria_inst: memInstrucoes port map(
+		Endereco => saidaPC,
+		Palavra => saidaMemoInstru -- fio 2
+    	);
+
+	-- port map unidade de controle
+	uc_principal: unidade_controle port map(
+		op_uc => saidaMemoInstru(31 downto 26), 
+	    ALU_op_uc => ALU_op_control,
+	    reg_write => saidaUC_regWrite,
+	    reg_dst => saidaUC_regDst,
+	    ALU_src => saidaUC_muxB,
+	    branch => saidaUC_branch,
+	    mem_write => saidaUC_memWrite,
+	    mem_toReg => saidaUC_memtoReg,
+	    jump => saidaUC_jump,
+	    mem_read => saidaUC_memRead
+		);
+
+	--port map muxA
+	muxA : mux2 port map(
+		A => saidaMemoInstru(20 downto 16),
+		B => saidaMemoInstru(15 downto 11),
+		resultado => saidaMuxA_bancoReg
+		);
+
+	-- port map unidade de controla da ula
+	UC_ula : uc_ula port map(
+		ALU_op => saidaUC_UCula, --fio 12
+		operacao => saidaUCula_ULA, -- fio 13, obs: na imagemd e caminho da dados fala "mais de 1 sinal"
+		funct => saidaMemoInstru(5 downto 0)
+		--Ainverte ?
+		--Binverte ?
+		);
+
+	--port map extensor de sinal
+	extensor_de_sinal is extensor_sinal port map(
+		entrada_16 => saidaMemoInstru(15 downto 0),
+		saida_32 => saidaExtSinal_deslocA -- fio 9
+		);
 	
 
+	--port map banco de registradores
+	banco_de_resgistradores : banco_registradores port map(
+		clk => clk;
+		endL1 => saidaMemoInstru(25 downto 21),
+		endL2 => saidaMemoInstru(25 downto 21),
+		escreverReg => saidaMuxA_bancoReg, --fio 4
+		dadoEscrita => saidaMuxC_writeData_bancoReg -- fio5
+		dadoL1 => saidaData1_ULA -- fio 7
+		dadoL2 => 	saidaData2 -- aqui tem q ver pq ele vai pra dois lugares
+	    );
 
+	--port map muxB
+	muxB : mux2 port map(
+		A => saidaData1_ULA, -- fio 8
+		B => saidaExtSinal_deslocA, -- fio 9, tem q ver aqui pq esse fio vai pra 2 lugares
+		resultado => saidaMuxB_ULA -- fio 11
+		);
+
+	--port map ula
+	ula_principal : ula_32 port map(
+		a => saidaData1_ULA,  -- fio 7
+		b => saidaMuxB_ULA, -- fio 11
+		op = > saidaUCula_ULA, -- fio 13
+		zero => saidaZeroULA_and, -- fio 14
+		result => saidaULA, -- fio 15, tem q ver aqui pq ele vai pra dois lugares diferentes
+		--Ainverte e Binverte??
+		);
+
+	-- port map memoria de dados
+	memoria_de_dados : memDados port map(
+		DadoLido => saidaULA, -- fio 15, tem q ver aqui pq esse fio vai pra 2 lugares7
+		DadoEscrita => saidaData2, -- fio 8,  tem q ver aqui pq esse fio vai pra 2 lugares7
+		Clock => clk,
+		LerMem => saidaDataMem_muxC, -- fio 17
+		--OS FIOS 16 E 18 VAO PRA ALGUM LUGAR AQUI
+		Endereco => 
+		EscreverMem =>
+		DebugEndereco =>
+		DebugPalavra =>
+		);
+
+	--port map muxc
+	muxB : mux2 port map(
+		B => saidaDataMem_muxC, -- fio 17
+		A => saidaULA, -- fio 15, tem q ver aqui pq esse fio vai pra 2 lugares
+		resultado => saidaMuxC_writeData_bancoReg -- fio 5
+	    );
+
+	--port map somador A
+	somador_A is somador port map
+
+	
 end Behavioral;
 
