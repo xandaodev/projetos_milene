@@ -33,17 +33,17 @@ entity xandinho is
 port(
 	clk, inicializar : in std_logic;
 	debugEndereco : in std_logic_vector (9 downto 2);
-	debugPalavra : out std_logic (9 downto 2)
+	debugPalavra : out std_logic_vector (9 downto 2)
 );
 end xandinho;
 
 architecture Behavioral of xandinho is
 --pc
-	component pc_component is
+	component pc is
 		port(
 			ini, clk : in std_logic;
 			entrada : in std_logic_vector(31 downto 0);
-			saida : out std_logic_vector(31 dowto 0)
+			saida : out std_logic_vector(31 downto 0)
 		);
 		end component;
 --memInstrucoes
