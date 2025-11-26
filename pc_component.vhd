@@ -33,7 +33,7 @@ entity pc is
 	port(
 		ini, clk : in std_logic;
 		entrada : in std_logic_vector(31 downto 0);
-		saida : out std_logic_vector(31 dowto 0)
+		saida : out std_logic_vector(31 downto 0)
 	);
 
 end pc;
