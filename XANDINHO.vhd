@@ -368,7 +368,7 @@ begin
 		);
 
 	-- port map deslocador A 
-	deslocador_B : deslocador_2 port map(
+	deslocador_A : deslocador_2 port map(
 		entrada_32 => saidaExtSinal_deslocA,
 		saida_32 => saidaDeslocA_somadorB -- fio 23
 		);
