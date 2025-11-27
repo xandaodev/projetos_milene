@@ -76,6 +76,8 @@ ula_0: ula1bit port map(
     less => vaivem(31),
    
     vai1_ula => vaivem(0),
+	--mudança mova:
+	set_ula => open,
     resultado_ula => result(0)
 );
 
@@ -94,6 +96,8 @@ gen_ulas : for i in 1 to 30 generate
       less => '0',
 
       vai1_ula => vaivem(i),
+	  --mudança mova:
+	  set_ula => open,
       resultado_ula => result(i)
     );
     end generate;
@@ -124,6 +128,7 @@ zero <= not or_result;
 
 
 end Behavioral;
+
 
 
 
