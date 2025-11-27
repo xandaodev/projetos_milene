@@ -215,6 +215,16 @@ end component;
 	--signal 29:
 	signal saidaMuxE_pc : std_logic_vector(31 downto 0);
 
+
+	--novos signals para o fatiamento dos signals necessarios:
+	signal opcode_signal : std_logic_vector(5 downto 0); 
+	signal ALU_op_control : std_logic_vector(1 downto 0);
+	signal funct_signal : std_logic_vector(5 downto 0);   
+	signal rs_addr : std_logic_vector(4 downto 0);      
+	signal rt_addr : std_logic_vector(4 downto 0);      
+	signal rd_addr : std_logic_vector(4 downto 0);      
+	signal inst_jump_26 : std_logic_vector(25 downto 0);
+
 	
 begin
 	--port map do pc:
@@ -255,9 +265,11 @@ begin
 
 	-- port map unidade de controla da ula
 	UC_ula : uc_ula port map(
-		ALU_op => saidaUC_UCula, --fio 12
+		--ALU_op => saidaUC_UCula, --fio 12
+		ALU_op => ALU_op_control, -- mudei aqui, n sei se ta certo
 		operacao => saidaUCula_ULA, -- fio 13, obs: na imagemd e caminho da dados fala "mais de 1 sinal"
-		funct => saidaMemoInstru(5 downto 0)
+		--funct => saidaMemoInstru(5 downto 0)
+		funct => funct_signal
 		--Ainverte ?
 		--Binverte ?
 		);
@@ -272,12 +284,13 @@ begin
 	--port map banco de registradores
 	banco_de_resgistradores : banco_registradores port map(
 		clk => clk,
-		endL1 => saidaMemoInstru(25 downto 21),
-		endL2 => saidaMemoInstru(25 downto 21),
-		escreverReg => saidaMuxA_bancoReg, --fio 4
+		endL1 => rs_addr,
+		endL2 => endL2 => rt_addr,
+		--escreverReg => saidaMuxA_bancoReg, --fio 4
+		escreverReg => saidaUC_regWrite, -- fio corrigido, espero que seja o certo agr, fio 6 agr
 		dadoEscrita => saidaMuxC_writeData_bancoReg, -- fio5
 		dadoL1 => saidaData1_ULA, -- fio 7
-		dadoL2 => 	saidaData2 -- aqui tem q ver pq ele vai pra dois lugares
+		dadoL2 => saidaData2 -- aqui tem q ver pq ele vai pra dois lugares
 	    );
 
 	--port map muxB
@@ -295,7 +308,8 @@ begin
 		op = > saidaUCula_ULA, -- fio 13
 		zero => saidaZeroULA_and, -- fio 14
 		result => saidaULA, -- fio 15, tem q ver aqui pq ele vai pra dois lugares diferentes
-		--Ainverte e Binverte??
+		Ainverte => '0',
+		Binverte => '0',
 		);
 
 	-- port map memoria de dados
