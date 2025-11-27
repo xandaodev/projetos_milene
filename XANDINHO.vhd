@@ -62,7 +62,7 @@ end component;
         reg_write, reg_dst, ALU_src, branch, mem_write, mem_toReg, jump, mem_read : out std_logic
     );
 end component;
---mux2
+--mux 2 entradas de 32 bits
 	component mux_2entradas_32 is
 	port(
 		e0_mux_2_32 : in std_logic_vector (0 to 31);
@@ -71,6 +71,16 @@ end component;
 		saida_mux_2_32 : out std_logic_vector (0 to 31)
 	);
 	end componeny;
+
+-- mux 2 entradas de 5 bits
+	component mux_2entradas_5 is
+	port(
+		e0_mux_2_5 : in std_logic_vector (0 to 31);
+		e1_mux_2_5 : in std_logic_vector (0 to 31);
+		sel_mux_2_5 : in std_logic;
+		saida_mux_2_5 : out std_logic_vector (0 to 31)
+	);
+	end component;
 --banco_registradores
 	component banco_registradores is
     port(
@@ -236,11 +246,11 @@ begin
 		);
 
 	--port map muxA
-	mux_A : mux2 port map(
-		e0_mux_2_32 => saidaMemoInstru(20 downto 16),
-		e1_mux_2_32  => saidaMemoInstru(15 downto 11),
-		sel_mux_2_32  => saidaUC_regDst, -- fio 3
-		saida_mux_2_32  => saidaMuxA_bancoReg
+	mux_A : mux_2entradas_5  port map(
+		e0_mux_2_5  => saidaMemoInstru(20 downto 16),
+		e1_mux_2_5   => saidaMemoInstru(15 downto 11),
+		sel_mux_2_5   => saidaUC_regDst, -- fio 3
+		saida_mux_2_5   => saidaMuxA_bancoReg
 		);
 
 	-- port map unidade de controla da ula
