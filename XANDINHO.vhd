@@ -84,7 +84,7 @@ end component;
 --banco_registradores
 	component banco_registradores is
     port(
-        clk, escreverReg : in std_logic;
+        clk, escreverReg : in std_logic,
         dadoEscrita : in std_logic_vector (31 downto 0); -- alexandre - mudei pra down to 
         endEscrita : in std_logic_vector (4 downto 0); -- mudei
 
@@ -271,7 +271,7 @@ begin
 
 	--port map banco de registradores
 	banco_de_resgistradores : banco_registradores port map(
-		clk => clk;
+		clk => clk,
 		endL1 => saidaMemoInstru(25 downto 21),
 		endL2 => saidaMemoInstru(25 downto 21),
 		escreverReg => saidaMuxA_bancoReg, --fio 4
@@ -320,12 +320,15 @@ begin
 	    );
 
 	--port map somador A
-	somador_A is somador_completo port map(
-		A => saidaPC,
-		B => '4',
-		vem1 => '0',
-		vai1 => '0',
-		resultado => saidaSomadorA -- fio 21
+	-- somador_A is somador_completo port map(
+	somador_A is ula_32 port map(
+		a => saidaPC,                 
+	    b => X"00000004",             
+	    Ainverte => '0', 
+		Binverte => '0', 
+	    op => "10",                    
+	    result => saidaSomadorA,
+		--zero => ?
 		);
 
 	-- port map deslocador B
@@ -341,13 +344,19 @@ begin
 		);
 
 	--port map somador B
-	somador_B is somador_completo port map(
-		A => saidaSomadorA, -- fio 21
-		B => saidaDeslocA_somadorB, -- fio 23
-		vem1 => '0',
-		vai1 => '0',
-		resultado => saidaSomadorB_muxD -- fio 24
+	--somador_B is somador_completo port map(
+	somador_B_ULA: ula_32 port map(
+		a => saidaSomadorA, -- fio 21
+		b => saidaDeslocA_somadorB, -- fio 23
+		Ainverte => '0',
+    	Binverte => '0',
+		op => "10", -- codigo da soma
+		result => saidaSomadorB_muxD
+		-- zero => ??
 		);
+
+		--and:
+		saidaAnd_muxD <= saidaZeroULA_and AND saidaUC_branch;
 
 
 	--port map muxD
