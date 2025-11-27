@@ -143,12 +143,12 @@ end component;
 	);
 end component;
 --somador completo
-	component somador_completo is
-	port(
-	A, B, vem1 : in std_logic;
-	vai1, resultado : out std_logic
-	);
-end component;
+--	component somador_completo is
+--	port(
+--	A, B, vem1 : in std_logic;
+--	vai1, resultado : out std_logic
+--	);
+--end component;
 --deslocador_2
 	component deslocador_2 is
     port(
@@ -284,9 +284,9 @@ begin
 		ALU_op => ALU_op_control, -- mudei aqui, n sei se ta certo
 		operacao => saidaUCula_ULA, -- fio 13, obs: na imagemd e caminho da dados fala "mais de 1 sinal"
 		--funct => saidaMemoInstru(5 downto 0)
-		funct => funct_signal
-		--Ainverte ?
-		--Binverte ?
+		funct => funct_signal,
+		Ainverte => Sainverte,
+		Binverte => Sbinverte
 		);
 
 	--port map extensor de sinal
@@ -323,8 +323,8 @@ begin
 		op => saidaUCula_ULA, -- fio 13
 		zero => saidaZeroULA_and, -- fio 14
 		result => saidaULA, -- fio 15, tem q ver aqui pq ele vai pra dois lugares diferentes
-		Ainverte => '0',
-		Binverte => '0'
+		Ainverte => Sainverte, --aqui tava ligada em zero mas milene falou pra fazer isso
+		Binverte => Sbinverte --aqui tava ligada em zero mas milene falou pra fazer isso
 		);
 
 	-- port map memoria de dados
@@ -361,13 +361,14 @@ begin
 		);
 
 	-- port map deslocador B
-	deslocador_B : delocador_2 port map(
+	deslocador_B : deslocador_2 port map(
+	   --entrada_32 => inst_jump_26,
 		entrada_32 => saidaMemoInstru(25 downto 0),
 		saida_32 => saidaDeslocB_muxE -- fio 22
 		);
 
 	-- port map deslocador A 
-	deslocador_B : delocador_2 port map(
+	deslocador_B : deslocador_2 port map(
 		entrada_32 => saidaExtSinal_deslocA,
 		saida_32 => saidaDeslocA_somadorB -- fio 23
 		);
