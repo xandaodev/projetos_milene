@@ -291,12 +291,11 @@ begin
 		DadoLido => saidaULA, -- fio 15, tem q ver aqui pq esse fio vai pra 2 lugares7
 		DadoEscrita => saidaData2, -- fio 8,  tem q ver aqui pq esse fio vai pra 2 lugares7
 		Clock => clk,
-		LerMem => saidaDataMem_muxC, -- fio 17
-		--OS FIOS 16 E 18 VAO PRA ALGUM LUGAR AQUI
+		LerMem => saidaUC_memRead, -- fio 18
 		Endereco => 
-		EscreverMem =>
-		DebugEndereco =>
-		DebugPalavra =>
+		EscreverMem => saidaUC_memWrite, -- fio 16
+		DebugEndereco => debugEndereco,
+		DebugPalavra => debugPalavra
 		);
 
 	--port map mux c
