@@ -76,8 +76,6 @@ ula_0: ula1bit port map(
     less => vaivem(31),
    
     vai1_ula => vaivem(0),
-	--mudança mova:
-	set_ula => open,
     resultado_ula => result(0)
 );
 
@@ -96,8 +94,6 @@ gen_ulas : for i in 1 to 30 generate
       less => '0',
 
       vai1_ula => vaivem(i),
-	  --mudança mova:
-	  set_ula => open,
       resultado_ula => result(i)
     );
     end generate;
@@ -120,7 +116,7 @@ ula_31: ula1bit port map(
 
 --RESULTADO FINAL
 resultado_or_32: porta_or_32 port map(
-  e => result, 
+  e => result,
   saida => or_result
 );
 --alexandre mudanças
@@ -129,6 +125,6 @@ zero <= not or_result;
 
 end Behavioral;
 
-
+-- erro que ta dando aqui: ERROR:HDLParsers:1411 - "/export/convidado/modulo_processador/ula_32.vhd" Line 119. Parameter result of mode out can not be associated with a formal port of mode in.
 
 
