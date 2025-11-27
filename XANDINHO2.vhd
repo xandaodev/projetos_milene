@@ -213,12 +213,12 @@ end component;
 begin
 
 	--fatiamento dos signals:
-	opcode_signal  <= saidaMemoInstru(31 downto 26);
-	rs_addr     <= saidaMemoInstru(25 downto 21);
-	rt_addr     <= saidaMemoInstru(20 downto 16);
-	rd_addr     <= saidaMemoInstru(15 downto 11);
-	funct_signal   <= saidaMemoInstru(5 downto 0);
-	inst_jump_26   <= saidaMemoInstru(25 downto 0);
+	opcode_signal <= saidaMemoInstru(31 downto 26);
+	rs_addr <= saidaMemoInstru(25 downto 21);
+	rt_addr <= saidaMemoInstru(20 downto 16);
+	rd_addr <= saidaMemoInstru(15 downto 11);
+	funct_signal <= saidaMemoInstru(5 downto 0);
+	inst_jump_26 <= saidaMemoInstru(25 downto 0);
 
 	--atribuiçoes nos port maps:
 
@@ -257,11 +257,11 @@ begin
 		e0_mux_2_5  => rt_addr,
 		
 		--e1_mux_2_5   => saidaMemoInstru(15 downto 11),
-		e1_mux_2_5   => rd_addr,
+		e1_mux_2_5  => rd_addr,
 		--sel_mux_2_5   => saidaUC_regDst, -- fio 3
-		sel_mux_2_5   => saidaUC_regDst, -- fio 3
+		sel_mux_2_5  => saidaUC_regDst, -- fio 3
 		--saida_mux_2_5   => saidaMuxA_bancoReg
-		saida_mux_2_5   => saidaMuxA_bancoReg
+		saida_mux_2_5  => saidaMuxA_bancoReg
 		);
 
 	-- port map unidade de controla da ula
@@ -287,7 +287,7 @@ begin
 		clk => clk,
 		endL1 => rs_addr,
 		endL2 => rt_addr,
-		endEscrita => saidaMuxA_bancoReg, --***************************** FIX: endEscrita adicionado
+		endEscrita => saidaMuxA_bancoReg, 
 		--escreverReg => saidaMuxA_bancoReg, --fio 4
 		escreverReg => saidaUC_regWrite, -- fio corrigido, espero que seja o certo agr, fio 6 agr
 		dadoEscrita => saidaMuxC_writeData_bancoReg, -- fio5
@@ -325,10 +325,9 @@ begin
 		Endereco => saidaULA, -- fio 15
 		EscreverMem => saidaUC_memWrite, -- fio 16
 		--DebugEndereco => debugEndereco,
-		DebugEndereco => X"000000" & debugEndereco, --***************************** FIX: Concatenando para 32 bits
-		DebugPalavra => open --***************************** FIX: Aberto para conectar ao output
+		DebugEndereco => X"000000" & debugEndereco, 
+		DebugPalavra => open 
 		);
-	-- Conexão da Saída de Debug (Top-level)
 	debugPalavra <= saidaDataMem_muxC(9 downto 2); --***************************** FIX: Slicing da saída de 32 bits para a porta de 8 bits (9:2)
 
 	--port map mux c
@@ -348,18 +347,18 @@ begin
 		 Binverte => '0', 
 	    op => "10",                    
 	    result => saidaSomadorA,
-	    zero => open --***************************** FIX: Conectando zero
+	    zero => open 
 		);
 
 	-- port map deslocador B
-	deslocador_jump : deslocador_2 port map( --***************************** FIX: Renomeado de deslocador_B para evitar redeclaração
+	deslocador_jump : deslocador_2 port map( 
 	   --entrada_32 => inst_jump_26,
-		entrada_32 => X"000000" & inst_jump_26, --***************************** FIX: Padronizando a entrada para 32 bits (6 zeros)
+		entrada_32 => X"000000" & inst_jump_26,
 		saida_32 => saidaDeslocB_muxE -- fio 22
 		);
 
 	-- port map deslocador A 
-	deslocador_branch : deslocador_2 port map( --***************************** FIX: Renomeado de deslocador_B para evitar redeclaração
+	deslocador_branch : deslocador_2 port map( 
 		entrada_32 => saidaExtSinal_deslocA,
 		saida_32 => saidaDeslocA_somadorB -- fio 23
 		);
@@ -373,7 +372,7 @@ begin
     	Binverte => '0',
 		op => "10", -- codigo da soma
 		result => saidaSomadorB_muxD,
-		zero => open --***************************** FIX: Conectando zero
+		zero => open 
 		);
 
 		--and:
@@ -389,8 +388,9 @@ begin
 		);
 
 	--port map muxE
+	--
 	mux_E : mux_2entradas_32 port map(
-		e0_mux_2_32  => saidaMuxD_muxE, -- FIO 27 --***************************** FIX: Trocado e0/e1 para seguir a lógica do Jump (Jump é e1/1)
+		e0_mux_2_32  => saidaMuxD_muxE, -- FIO 27 -
 		e1_mux_2_32  => saidaDeslocB_muxE, -- FIO 22
 		sel_mux_2_32 => saidaUC_jump, -- fio 28
 		saida_mux_2_32  => saidaMuxE_pc -- fio 29
