@@ -300,11 +300,12 @@ begin
 
 	-- port map memoria de dados
 	memoria_de_dados : memDados port map(
-		DadoLido => saidaULA, -- fio 15, tem q ver aqui pq esse fio vai pra 2 lugares7
+		--DadoLido => saidaULA, -- fio 15, tem q ver aqui pq esse fio vai pra 2 lugares7
+		DadoLido => saidaDataMem_muxC, -- fio 17
 		DadoEscrita => saidaData2, -- fio 8,  tem q ver aqui pq esse fio vai pra 2 lugares7
 		Clock => clk,
 		LerMem => saidaUC_memRead, -- fio 18
-		Endereco => 
+		Endereco => saidaULA, -- fio 15
 		EscreverMem => saidaUC_memWrite, -- fio 16
 		DebugEndereco => debugEndereco,
 		DebugPalavra => debugPalavra
