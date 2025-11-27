@@ -31,10 +31,10 @@ use IEEE.STD_LOGIC_1164.ALL;
 
 entity mux_2entradas_5 is
 port(
-	e0_mux_2_5 : in std_logic_vector (0 to 31);
-	e1_mux_2_5 : in std_logic_vector (0 to 31);
+	e0_mux_2_5 : in std_logic_vector (4 downto 0); -- corrigi, agr sao 5 bits mesmo
+	e1_mux_2_5 : in std_logic_vector (4 downto 0); -- corrigi, agr sao 5 bits mesmo
 	sel_mux_2_5 : in std_logic;
-	saida_mux_2_5 : out std_logic_vector (0 to 31)
+	saida_mux_2_5 : out std_logic_vector (4 downto 0) -- corrigi, agr sao 5 bits mesmo
 );
 end mux_2entradas_5;
 
