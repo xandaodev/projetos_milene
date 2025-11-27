@@ -336,12 +336,12 @@ begin
 		e0_mux_2_32  => saidaULA, -- fio 15, tem q ver aqui pq esse fio vai pra 2 lugares
 		sel_mux_2_32  => saidaUC_memtoReg, -- fio 19
 		saida_mux_2_32  => saidaMuxC_writeData_bancoReg -- fio 5
-	    );
+		);
 
 	--port map somador A
 	-- somador_A is somador_completo port map(
 	somador_A : ula_32 port map(
-		a => saidaPC,                 
+		 a => saidaPC,                 
 	    b => X"00000004",             
 	    Ainverte => '0', 
 		 Binverte => '0', 
@@ -398,3 +398,56 @@ begin
 
 	
 end Behavioral;
+
+
+
+INFO:HDLCompiler:1061 - Parsing VHDL file "/export/convidado/modulo_processador/xandinho.vhd" into library work
+ERROR:HDLCompiler:806 - "/export/convidado/modulo_processador/xandinho.vhd" Line 201: Syntax error near "���ERROR:HDLCompiler:806 - "/export/convidado/modulo_processador/xandinho.vhd" Line 203: Syntax error near "���ERROR:HDLCompiler:806 - "/export/convidado/modulo_processador/xandinho.vhd" Line 204: Syntax error near "���ERROR:HDLCompiler:806 - "/export/convidado/modulo_processador/xandinho.vhd" Line 205: Syntax error near "���ERROR:HDLCompiler:806 - "/export/convidado/modulo_processador/xandinho.vhd" Line 206: Syntax error near "���ERROR:HDLCompiler:806 - "/export/convidado/modulo_processador/xandinho.vhd" Line 243: Syntax error near "���ERROR:HDLCompiler:806 - "/export/convidado/modulo_processador/xandinho.vhd" Line 296: Syntax error near "���ERROR:HDLCompiler:806 - "/export/convidado/modulo_processador/xandinho.vhd" Line 310: Syntax error near "b".
+ERROR:HDLCompiler:806 - "/export/convidado/modulo_processador/xandinho.vhd" Line 344: Syntax error near "���ERROR:ProjectMgmt - 9 error(s) found while parsing design hierarchy.
+WARNING:ProjectMgmt - Duplicate Design Unit 'mux_2entradas_5' found in library 'work'
+WARNING:ProjectMgmt -    "/export/convidado/modulo_processador/mux_2entradas_5.vhd" line 32 (active)
+WARNING:ProjectMgmt -    "/export/convidado/modulo_processador/pc_component.vhd" line 32 
+WARNING:ProjectMgmt - Duplicate Design Unit 'Behavioral' found in library 'work'
+WARNING:ProjectMgmt -    "/export/convidado/modulo_processador/mux_2entradas_5.vhd" line 41 (active)
+WARNING:ProjectMgmt -    "/export/convidado/modulo_processador/pc_component.vhd" line 41 
+���".
+���".
+���".
+���".
+���".
+���".
+���".
+���".
+���".
+���".
+���".
+���".
+���".
+���".
+���".
+���".
+���".
+���".
+���".
+���".
+���".
+���".
+���".
+���".
+���".
+���".
+���".
+���".
+���".
+���".
+���".
+���".
+���".
+���".
+���".
+���".
+���".
+���".
+���".
+���".
+���".
