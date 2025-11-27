@@ -108,13 +108,8 @@ muxL2 : mux32x32 port map(
 );
         
 
---confere ai e ve se ta certo amor <3
 
 end Behavioral;
-
--- "C:\ghdl\bin\ghdl.exe" -a "nome"  --> compila o arquivo isoladamente (se depender de outro(s) componente(s), tem que compilar -todos- ele(s) antes)
--- & "C:\ghdl\bin\ghdl.exe" -a *.vhd  --> compila todos os arquivos de uma vez
-
 
 
 
