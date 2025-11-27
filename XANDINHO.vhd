@@ -272,9 +272,14 @@ begin
 
 	--port map muxA
 	mux_A : mux_2entradas_5  port map(
-		e0_mux_2_5  => saidaMemoInstru(20 downto 16),
-		e1_mux_2_5   => saidaMemoInstru(15 downto 11),
+		--e0_mux_2_5  => saidaMemoInstru(20 downto 16),
+		e0_mux_2_5  => rt_addr,
+		
+		--e1_mux_2_5   => saidaMemoInstru(15 downto 11),
+		e1_mux_2_5   => rd_addr,
+		--sel_mux_2_5   => saidaUC_regDst, -- fio 3
 		sel_mux_2_5   => saidaUC_regDst, -- fio 3
+		--saida_mux_2_5   => saidaMuxA_bancoReg
 		saida_mux_2_5   => saidaMuxA_bancoReg
 		);
 
@@ -301,6 +306,7 @@ begin
 		clk => clk,
 		endL1 => rs_addr,
 		endL2 => rt_addr,
+		endEscrita => saidaMuxA_bancoReg,
 		--escreverReg => saidaMuxA_bancoReg, --fio 4
 		escreverReg => saidaUC_regWrite, -- fio corrigido, espero que seja o certo agr, fio 6 agr
 		dadoEscrita => saidaMuxC_writeData_bancoReg, -- fio5
@@ -310,7 +316,8 @@ begin
 
 	--port map muxB
 	mux_B : mux_2entradas_32 port map(
-		e0_mux_2_32  => saidaData1_ULA, -- fio 8
+		--e0_mux_2_32  => saidaData1_ULA, -- fio 8
+		e0_mux_2_32  => saidaData2,
 		e1_mux_2_32  => saidaExtSinal_deslocA, -- fio 9, tem q ver aqui pq esse fio vai pra 2 lugares
 		sel_mux_2_32  => saidaUC_muxB, --fio 10
 		saida_mux_2_32  => saidaMuxB_ULA -- fio 11
@@ -336,6 +343,7 @@ begin
 		LerMem => saidaUC_memRead, -- fio 18
 		Endereco => saidaULA, -- fio 15
 		EscreverMem => saidaUC_memWrite, -- fio 16
+		--DebugEndereco => debugEndereco,
 		DebugEndereco => debugEndereco,
 		DebugPalavra => debugPalavra
 		);
