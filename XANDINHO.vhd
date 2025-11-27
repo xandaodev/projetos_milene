@@ -63,12 +63,14 @@ end component;
     );
 end component;
 --mux2
-	component mux2 is
+	component mux_2entradas_32 is
 	port(
-		A, B, s: in std_logic;
-		resultado : out std_logic
+		e0_mux_2_32 : in std_logic_vector (0 to 31);
+		e1_mux_2_32 : in std_logic_vector (0 to 31);
+		sel_mux_2_32 : in std_logic;
+		saida_mux_2_32 : out std_logic_vector (0 to 31)
 	);
-end component;
+	end componeny;
 --banco_registradores
 	component banco_registradores is
     port(
@@ -235,10 +237,10 @@ begin
 
 	--port map muxA
 	mux_A : mux2 port map(
-		A => saidaMemoInstru(20 downto 16),
-		B => saidaMemoInstru(15 downto 11),
-		s => saidaUC_regDst, -- fio 3
-		resultado => saidaMuxA_bancoReg
+		e0_mux_2_32 => saidaMemoInstru(20 downto 16),
+		e1_mux_2_32  => saidaMemoInstru(15 downto 11),
+		sel_mux_2_32  => saidaUC_regDst, -- fio 3
+		saida_mux_2_32  => saidaMuxA_bancoReg
 		);
 
 	-- port map unidade de controla da ula
@@ -269,11 +271,11 @@ begin
 	    );
 
 	--port map muxB
-	mux_B : mux2 port map(
-		A => saidaData1_ULA, -- fio 8
-		B => saidaExtSinal_deslocA, -- fio 9, tem q ver aqui pq esse fio vai pra 2 lugares
-		s => saidaUC_muxB, --fio 10
-		resultado => saidaMuxB_ULA -- fio 11
+	mux_B : mux_2entradas_32 port map(
+		e0_mux_2_32  => saidaData1_ULA, -- fio 8
+		e1_mux_2_32  => saidaExtSinal_deslocA, -- fio 9, tem q ver aqui pq esse fio vai pra 2 lugares
+		sel_mux_2_32  => saidaUC_muxB, --fio 10
+		saida_mux_2_32  => saidaMuxB_ULA -- fio 11
 		);
 
 	--port map ula
@@ -299,11 +301,11 @@ begin
 		);
 
 	--port map mux c
-	mux_C : mux2 port map(
-		B => saidaDataMem_muxC, -- fio 17
-		A => saidaULA, -- fio 15, tem q ver aqui pq esse fio vai pra 2 lugares
-		s => saidaUC_memtoReg, -- fio 19
-		resultado => saidaMuxC_writeData_bancoReg -- fio 5
+	mux_C : mux_2entradas_32 port map(
+		e1_mux_2_32  => saidaDataMem_muxC, -- fio 17
+		e0_mux_2_32  => saidaULA, -- fio 15, tem q ver aqui pq esse fio vai pra 2 lugares
+		sel_mux_2_32  => saidaUC_memtoReg, -- fio 19
+		saida_mux_2_32  => saidaMuxC_writeData_bancoReg -- fio 5
 	    );
 
 	--port map somador A
@@ -338,19 +340,19 @@ begin
 
 
 	--port map muxD
-	mux_D : mux2 port map(
-		A => saidaSomadorA, -- FIO 21
-		B => saidaSomadorB_muxD, -- FIO 24
-		s=> saidaAnd_muxD, -- fio 26
-		resultado => saidaMuxD_muxE -- fio 27
+	mux_D : mux_2entradas_32 port map(
+		e0_mux_2_32  => saidaSomadorA, -- FIO 21
+		e1_mux_2_32  => saidaSomadorB_muxD, -- FIO 24
+		sel_mux_2_32 => saidaAnd_muxD, -- fio 26
+		saida_mux_2_32  => saidaMuxD_muxE -- fio 27
 		);
 
 	--port map muxE
-	mux_E : mux2 port map(
-		B => saidaDeslocB_muxE, -- FIO 22, SE ATENTAR AQUI PQ TEM QUE FAZER SLICE NESSE FIO
-		A => saidaMuxD_muxE, -- FIO 27
-		s=> saidaUC_jump, -- fio 28
-		resultado => saidaMuxE_pc -- fio 29
+	mux_E : mux_2entradas_32 port map(
+		e1_mux_2_32  => saidaDeslocB_muxE, -- FIO 22, SE ATENTAR AQUI PQ TEM QUE FAZER SLICE NESSE FIO
+		e0_mux_2_32  => saidaMuxD_muxE, -- FIO 27
+		sel_mux_2_32 => saidaUC_jump, -- fio 28
+		saida_mux_2_32  => saidaMuxE_pc -- fio 29
 		);
 
 	
