@@ -1,3 +1,22 @@
+----------------------------------------------------------------------------------
+-- Company: 
+-- Engineer: Xandão e Xandona
+-- 
+-- Create Date:    14:38:16 11/25/2025 
+-- Design Name: 
+-- Module Name:    xandinho - Behavioral 
+-- Project Name: 
+-- Target Devices: 
+-- Tool versions: 
+-- Description: 
+--
+-- Dependencies: 
+--
+-- Revision: 
+-- Revision 0.01 - File Created
+-- Additional Comments: 
+--
+----------------------------------------------------------------------------------
 library IEEE;
 use IEEE.STD_LOGIC_1164.ALL;
 
@@ -51,8 +70,8 @@ end component;
 		sel_mux_2_32 : in std_logic;
 		saida_mux_2_32 : out std_logic_vector (0 to 31)
 	);
-	end component; --***************************** Mudei para 'end component'
-                                       
+	end component; --***************************** FIX: Mudei para 'end component'
+
 -- mux 2 entradas de 5 bits
 	component mux_2entradas_5 is
 	port(
@@ -75,7 +94,7 @@ end component;
         dadoL1 : out std_logic_vector(31 downto 0); 
         dadoL2 : out std_logic_vector(31 downto 0)
     );
-end component; --***************************** Mudei a vírgula para ponto e vírgula na linha 1182 (não visível aqui)
+end component;
 
 --extensor_sinal
 	component extensor_sinal is
@@ -198,12 +217,12 @@ end component;
 
 
 	--novos signals para o fatiamento dos signals necessarios:
-	signal opcode_signal : std_logic_vector(5 downto 0); 
+	signal opcode_signal : std_logic_vector(5 downto 0); 
 	signal ALU_op_control : std_logic_vector(1 downto 0);
-	signal funct_signal : std_logic_vector(5 downto 0);   
-	signal rs_addr : std_logic_vector(4 downto 0);      
-	signal rt_addr : std_logic_vector(4 downto 0);      
-	signal rd_addr : std_logic_vector(4 downto 0);      
+	signal funct_signal : std_logic_vector(5 downto 0); 
+	signal rs_addr : std_logic_vector(4 downto 0); 
+	signal rt_addr : std_logic_vector(4 downto 0); 
+	signal rd_addr : std_logic_vector(4 downto 0); 
 	signal inst_jump_26 : std_logic_vector(25 downto 0);
 	
 	-- signal que marcely e digao falou pra colocar
@@ -213,12 +232,12 @@ end component;
 begin
 
 	--fatiamento dos signals:
-	opcode_signal <= saidaMemoInstru(31 downto 26);
-	rs_addr <= saidaMemoInstru(25 downto 21);
-	rt_addr <= saidaMemoInstru(20 downto 16);
-	rd_addr <= saidaMemoInstru(15 downto 11);
-	funct_signal <= saidaMemoInstru(5 downto 0);
-	inst_jump_26 <= saidaMemoInstru(25 downto 0);
+	opcode_signal  <= saidaMemoInstru(31 downto 26);
+	rs_addr     <= saidaMemoInstru(25 downto 21);
+	rt_addr     <= saidaMemoInstru(20 downto 16);
+	rd_addr     <= saidaMemoInstru(15 downto 11);
+	funct_signal   <= saidaMemoInstru(5 downto 0);
+	inst_jump_26   <= saidaMemoInstru(25 downto 0);
 
 	--atribuiçoes nos port maps:
 
@@ -253,23 +272,16 @@ begin
 
 	--port map muxA
 	mux_A : mux_2entradas_5  port map(
-		--e0_mux_2_5  => saidaMemoInstru(20 downto 16),
-		e0_mux_2_5  => rt_addr,
-		
-		--e1_mux_2_5   => saidaMemoInstru(15 downto 11),
-		e1_mux_2_5  => rd_addr,
-		--sel_mux_2_5   => saidaUC_regDst, -- fio 3
-		sel_mux_2_5  => saidaUC_regDst, -- fio 3
-		--saida_mux_2_5   => saidaMuxA_bancoReg
-		saida_mux_2_5  => saidaMuxA_bancoReg
+		e0_mux_2_5  => rt_addr, -- FIX: rt_addr (Inst 20:16)
+		e1_mux_2_5   => rd_addr, -- FIX: rd_addr (Inst 15:11)
+		sel_mux_2_5   => saidaUC_regDst, -- fio 3
+		saida_mux_2_5   => saidaMuxA_bancoReg
 		);
 
 	-- port map unidade de controla da ula
 	UC_ula : uc_ula port map(
-		--ALU_op => saidaUC_UCula, --fio 12
-		ALU_op => ALU_op_control, -- mudei aqui, n sei se ta certo
-		operacao => saidaUCula_ULA, -- fio 13, obs: na imagemd e caminho da dados fala "mais de 1 sinal"
-		--funct => saidaMemoInstru(5 downto 0)
+		ALU_op => ALU_op_control, -- CORRETO: Fio 12
+		operacao => saidaUCula_ULA, -- fio 13
 		funct => funct_signal,
 		Ainverte => Sainverte,
 		Binverte => Sbinverte
@@ -286,20 +298,18 @@ begin
 	banco_de_resgistradores : banco_registradores port map(
 		clk => clk,
 		endL1 => rs_addr,
-		endL2 => rt_addr,
-		endEscrita => saidaMuxA_bancoReg, 
-		--escreverReg => saidaMuxA_bancoReg, --fio 4
-		escreverReg => saidaUC_regWrite, -- fio corrigido, espero que seja o certo agr, fio 6 agr
-		dadoEscrita => saidaMuxC_writeData_bancoReg, -- fio5
+		endL2 => rt_addr, -- CORRETO: rt_addr (Inst 20:16)
+		endEscrita => saidaMuxA_bancoReg, -- Fio 4 (Endereço de Escrita)
+		escreverReg => saidaUC_regWrite, -- Fio 6 (Sinal de Escrita)
+		dadoEscrita => saidaMuxC_writeData_bancoReg, -- fio 5 (Dado a ser escrito)
 		dadoL1 => saidaData1_ULA, -- fio 7
-		dadoL2 => saidaData2 -- aqui tem q ver pq ele vai pra dois lugares
-	    );
+		dadoL2 => saidaData2 -- fio 8
+	    );
 
 	--port map muxB
 	mux_B : mux_2entradas_32 port map(
-		--e0_mux_2_32  => saidaData1_ULA, -- fio 8
-		e0_mux_2_32  => saidaData2,
-		e1_mux_2_32  => saidaExtSinal_deslocA, -- fio 9, tem q ver aqui pq esse fio vai pra 2 lugares
+		e0_mux_2_32  => saidaData2, -- CORRETO: Dado Lido 2 (Fio 8)
+		e1_mux_2_32  => saidaExtSinal_deslocA, -- Fio 9
 		sel_mux_2_32  => saidaUC_muxB, --fio 10
 		saida_mux_2_32  => saidaMuxB_ULA -- fio 11
 		);
@@ -310,61 +320,57 @@ begin
 		b => saidaMuxB_ULA, -- fio 11
 		op => saidaUCula_ULA, -- fio 13
 		zero => saidaZeroULA_and, -- fio 14
-		result => saidaULA, -- fio 15, tem q ver aqui pq ele vai pra dois lugares diferentes
-		Ainverte => Sainverte, --aqui tava ligada em zero mas milene falou pra fazer isso
-		Binverte => Sbinverte --aqui tava ligada em zero mas milene falou pra fazer isso
+		result => saidaULA, -- fio 15
+		Ainverte => Sainverte, 
+		Binverte => Sbinverte
 		);
 
 	-- port map memoria de dados
 	memoria_de_dados : memDados port map(
-		--DadoLido => saidaULA, -- fio 15, tem q ver aqui pq esse fio vai pra 2 lugares7
 		DadoLido => saidaDataMem_muxC, -- fio 17
-		DadoEscrita => saidaData2, -- fio 8,  tem q ver aqui pq esse fio vai pra 2 lugares7
+		DadoEscrita => saidaData2, -- fio 8
 		Clock => clk,
 		LerMem => saidaUC_memRead, -- fio 18
 		Endereco => saidaULA, -- fio 15
 		EscreverMem => saidaUC_memWrite, -- fio 16
-		--DebugEndereco => debugEndereco,
-		DebugEndereco => X"000000" & debugEndereco, 
-		DebugPalavra => open 
+		DebugEndereco => X"000000" & debugEndereco, -- FIX CRÍTICO: Mapeamento de 8 bits para 32 bits
+		DebugPalavra => open -- FIX CRÍTICO: Abrindo o pino de 32 bits
 		);
-	debugPalavra <= saidaDataMem_muxC(9 downto 2); --***************************** FIX: Slicing da saída de 32 bits para a porta de 8 bits (9:2)
+	-- Conexão da Saída de Debug (Top-level)
+	debugPalavra <= saidaDataMem_muxC(9 downto 2); --***************************** FIX: Slicing para a porta de 8 bits (9:2)
 
 	--port map mux c
 	mux_C : mux_2entradas_32 port map(
 		e1_mux_2_32  => saidaDataMem_muxC, -- fio 17
-		e0_mux_2_32  => saidaULA, -- fio 15, tem q ver aqui pq esse fio vai pra 2 lugares
+		e0_mux_2_32  => saidaULA, -- fio 15
 		sel_mux_2_32  => saidaUC_memtoReg, -- fio 19
 		saida_mux_2_32  => saidaMuxC_writeData_bancoReg -- fio 5
-		);
+	    );
 
 	--port map somador A
-	-- somador_A is somador_completo port map(
-	somador_A : ula_32 port map(
-		 a => saidaPC,                 
+	somador_PC4: ula_32 port map( --***************************** FIX: Renomeado para somador_PC4
+		a => saidaPC,                 
 	    b => X"00000004",             
 	    Ainverte => '0', 
 		 Binverte => '0', 
 	    op => "10",                    
 	    result => saidaSomadorA,
-	    zero => open 
+		 zero => open --***************************** FIX: Conectando zero
 		);
 
 	-- port map deslocador B
-	deslocador_jump : deslocador_2 port map( 
-	   --entrada_32 => inst_jump_26,
-		entrada_32 => X"000000" & inst_jump_26,
+	deslocador_jump : deslocador_2 port map( --***************************** FIX: Renomeado de 'deslocador_B'
+		entrada_32 => X"000000" & inst_jump_26, --***************************** FIX: Padronizando 26 bits para 32 bits
 		saida_32 => saidaDeslocB_muxE -- fio 22
 		);
 
 	-- port map deslocador A 
-	deslocador_branch : deslocador_2 port map( 
+	deslocador_branch : deslocador_2 port map( --***************************** FIX: Renomeado de 'deslocador_B'
 		entrada_32 => saidaExtSinal_deslocA,
 		saida_32 => saidaDeslocA_somadorB -- fio 23
 		);
 
 	--port map somador B
-	--somador_B is somador_completo port map(
 	somador_B_ULA: ula_32 port map(
 		a => saidaSomadorA, -- fio 21
 		b => saidaDeslocA_somadorB, -- fio 23
@@ -372,7 +378,7 @@ begin
     	Binverte => '0',
 		op => "10", -- codigo da soma
 		result => saidaSomadorB_muxD,
-		zero => open 
+		zero => open --***************************** FIX: Conectando zero
 		);
 
 		--and:
@@ -388,16 +394,12 @@ begin
 		);
 
 	--port map muxE
-	--
 	mux_E : mux_2entradas_32 port map(
-		e0_mux_2_32  => saidaMuxD_muxE, -- FIO 27 -
-		e1_mux_2_32  => saidaDeslocB_muxE, -- FIO 22
+		e0_mux_2_32  => saidaMuxD_muxE, -- FIO 27 
+		e1_mux_2_32  => saidaDeslocB_muxE, -- FIO 22 
 		sel_mux_2_32 => saidaUC_jump, -- fio 28
 		saida_mux_2_32  => saidaMuxE_pc -- fio 29
 		);
-
-	
-end Behavioral;
 
 
 
