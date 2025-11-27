@@ -407,3 +407,9 @@ begin
 
 	
 end Behavioral;
+
+-- erros:ERROR:HDLParsers:1202 - "/export/convidado/modulo_processador/xandinho.vhd" Line 290. Redeclaration of symbol UC_ula.
+--ERROR:HDLParsers:851 - "/export/convidado/modulo_processador/xandinho.vhd" Line 300. Formal endEscrita of banco_registradores with no default value must be associated with an actual value.
+--ERROR:HDLParsers:837 - "/export/convidado/modulo_processador/xandinho.vhd" Line 339. Width mismatch. Expected width 32, Actual width is 8 for dimension 1 of debugEndereco.
+--ERROR:HDLParsers:837 - "/export/convidado/modulo_processador/xandinho.vhd" Line 340. Width mismatch. Expected width 32, Actual width is 8 for dimension 1 of debugPalavra.
+--ERROR:HDLParsers:804 - "/export/convidado/modulo_processador/xandinho.vhd" Line 366. Size of saidaMemoInstru is different than size of the target.
