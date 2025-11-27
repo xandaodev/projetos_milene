@@ -84,7 +84,7 @@ end component;
 --banco_registradores
 	component banco_registradores is
     port(
-        clk, escreverReg : in std_logic,
+        clk, escreverReg : in std_logic;
         dadoEscrita : in std_logic_vector (31 downto 0); -- alexandre - mudei pra down to 
         endEscrita : in std_logic_vector (4 downto 0); -- mudei
 
@@ -287,11 +287,11 @@ begin
 		);
 
 	--port map extensor de sinal
-	extensor_de_sinal is extensor_sinal port map(
+	extensor_de_sinal : extensor_sinal port map(
 		entrada_16 => saidaMemoInstru(15 downto 0),
 		saida_32 => saidaExtSinal_deslocA -- fio 9
 		);
-	
+
 
 	--port map banco de registradores
 	banco_de_resgistradores : banco_registradores port map(
@@ -317,11 +317,11 @@ begin
 	ula_principal : ula_32 port map(
 		a => saidaData1_ULA,  -- fio 7
 		b => saidaMuxB_ULA, -- fio 11
-		op = > saidaUCula_ULA, -- fio 13
+		op => saidaUCula_ULA, -- fio 13
 		zero => saidaZeroULA_and, -- fio 14
 		result => saidaULA, -- fio 15, tem q ver aqui pq ele vai pra dois lugares diferentes
 		Ainverte => '0',
-		Binverte => '0',
+		Binverte => '0'
 		);
 
 	-- port map memoria de dados
@@ -347,24 +347,24 @@ begin
 
 	--port map somador A
 	-- somador_A is somador_completo port map(
-	somador_A is ula_32 port map(
+	somador_A : ula_32 port map(
 		a => saidaPC,                 
 	    b => X"00000004",             
 	    Ainverte => '0', 
-		Binverte => '0', 
+		 Binverte => '0', 
 	    op => "10",                    
-	    result => saidaSomadorA,
+	    result => saidaSomadorA
 		--zero => ?
 		);
 
 	-- port map deslocador B
-	deslocador_B is delocador_2 port map(
+	deslocador_B : delocador_2 port map(
 		entrada_32 => saidaMemoInstru(25 downto 0),
 		saida_32 => saidaDeslocB_muxE -- fio 22
 		);
 
 	-- port map deslocador A 
-	deslocador_B is delocador_2 port map(
+	deslocador_B : delocador_2 port map(
 		entrada_32 => saidaExtSinal_deslocA,
 		saida_32 => saidaDeslocA_somadorB -- fio 23
 		);
@@ -403,4 +403,3 @@ begin
 
 	
 end Behavioral;
-
