@@ -22,7 +22,7 @@ use IEEE.STD_LOGIC_1164.ALL;
 
 -- Uncomment the following library declaration if using
 -- arithmetic functions with Signed or Unsigned values
---use IEEE.NUMERIC_STD.ALL;
+use IEEE.NUMERIC_STD.ALL;
 
 -- Uncomment the following library declaration if instantiating
 -- any Xilinx primitives in this code.
@@ -70,15 +70,15 @@ end component;
 		sel_mux_2_32 : in std_logic;
 		saida_mux_2_32 : out std_logic_vector (0 to 31)
 	);
-	end componeny;
+	end component;
 
 -- mux 2 entradas de 5 bits
 	component mux_2entradas_5 is
 	port(
-		e0_mux_2_5 : in std_logic_vector (0 to 31);
-		e1_mux_2_5 : in std_logic_vector (0 to 31);
-		sel_mux_2_5 : in std_logic;
-		saida_mux_2_5 : out std_logic_vector (0 to 31)
+	e0_mux_2_5 : in std_logic_vector (4 downto 0); -- corrigi, agr sao 5 bits mesmo
+	e1_mux_2_5 : in std_logic_vector (4 downto 0); -- corrigi, agr sao 5 bits mesmo
+	sel_mux_2_5 : in std_logic;
+	saida_mux_2_5 : out std_logic_vector (4 downto 0) -- corrigi, agr sao 5 bits mesmo
 	);
 	end component;
 --banco_registradores
@@ -227,6 +227,18 @@ end component;
 
 	
 begin
+
+	--fatiamento dos signals:
+	opcode_signal  <= saidaMemoInstru(31 downto 26);
+	rs_addr     <= saidaMemoInstru(25 downto 21);
+	rt_addr     <= saidaMemoInstru(20 downto 16);
+	rd_addr     <= saidaMemoInstru(15 downto 11);
+	funct_signal   <= saidaMemoInstru(5 downto 0);
+	inst_jump_26   <= saidaMemoInstru(25 downto 0);
+
+	--atribuiçoes nos port maps:
+
+
 	--port map do pc:
 	PC_reg: pc port map(
 		ini => inicializar,
@@ -285,7 +297,7 @@ begin
 	banco_de_resgistradores : banco_registradores port map(
 		clk => clk,
 		endL1 => rs_addr,
-		endL2 => endL2 => rt_addr,
+		endL2 => rt_addr,
 		--escreverReg => saidaMuxA_bancoReg, --fio 4
 		escreverReg => saidaUC_regWrite, -- fio corrigido, espero que seja o certo agr, fio 6 agr
 		dadoEscrita => saidaMuxC_writeData_bancoReg, -- fio5
