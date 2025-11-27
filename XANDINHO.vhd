@@ -224,6 +224,9 @@ end component;
 	signal rt_addr : std_logic_vector(4 downto 0);      
 	signal rd_addr : std_logic_vector(4 downto 0);      
 	signal inst_jump_26 : std_logic_vector(25 downto 0);
+	
+	-- signal que marcely e digao falou pra colocar
+	signal Sainverte, Sbinverte : std_logic;
 
 	
 begin
