@@ -90,19 +90,19 @@ gen_registradores : for i in 0 to 31 generate
         clear =>'0',
         enable => saida_decod(i),
         e_reg => dadoEscrita,
-        saida_reg => saida_32regs(i)
+        saida_reg => saida_32regs(i) -- aqui tava saida_32_regs
 );
     end generate;
 
 -- TERCEIRA coluna,  muxes
 muxL1 : mux32x32 port map(
-    E => saida_32_regs,
+    E => saida_32regs,
     Sel => endL1,
     Saida => dadoL1
 );
 
 muxL2 : mux32x32 port map(
-    E => saida_32_regs,
+    E => saida_32regs, -- aqui tava saida_32_regs
     Sel => endL2,
     Saida => dadoL2
 );
