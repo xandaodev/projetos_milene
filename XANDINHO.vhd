@@ -373,7 +373,8 @@ begin
 	-- port map deslocador B
 	deslocador_B : deslocador_2 port map(
 	   --entrada_32 => inst_jump_26,
-		entrada_32 => saidaMemoInstru(25 downto 0),
+		entrada_32(25 downto 0) => saidaMemoInstru(25 downto 0),
+		entrada_32(31 downto 26) => "000000", 
 		saida_32 => saidaDeslocB_muxE -- fio 22
 		);
 
