@@ -40,7 +40,7 @@ end registrador_32;
 architecture Behavioral of registrador_32 is
     component ffd is 
         port(
-            D, clk, enable, preset, clear : in  std_logic;
+            D, clk, enable_ffd, preset, clear : in  std_logic;
             Q : out std_logic
         );
     end component;
@@ -52,7 +52,7 @@ gen_registrador : for i in 0 to 31 generate
         clk => clk,
         preset => preset,
         clear => clear,
-        enable => enable,
+        enable_ffd => enable, -- aqui era so enable => enable
         Q => saida_reg(i)
     );
 end generate;
