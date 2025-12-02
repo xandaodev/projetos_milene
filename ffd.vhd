@@ -23,7 +23,7 @@ use IEEE.STD_LOGIC_1164.ALL;
 entity ffd is
     port(
         clear, preset : in std_logic; 
-        D, clk, enable_ffd_ffd : in std_logic;
+        D, clk, enable_ffd : in std_logic;
         Q, Qb : out std_logic
     );
 end ffd;
@@ -54,3 +54,4 @@ begin
     Qb <= not n;
 
 end Behavioral;
+
