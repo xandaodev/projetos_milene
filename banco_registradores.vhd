@@ -86,6 +86,7 @@ decod: decod_5_32 port map (
 
 gen_registradores : for i in 0 to 31 generate
     inst_reg : registrador_32 port map(
+		  clk => clk, -- conectei os clocks
         preset => '0',
         clear =>'0',
         enable => saida_decod(i),
