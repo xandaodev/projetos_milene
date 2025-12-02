@@ -1,6 +1,6 @@
 ----------------------------------------------------------------------------------
 -- Company: 
--- Engineer: 
+-- Engineer: xandão e xandona
 -- 
 -- Create Date:    14:38:27 12/02/2025 
 -- Design Name: 
@@ -52,7 +52,7 @@ gerar : for i in 0 to 31 generate
 		B => B(i),
 		vem1 => vemvai1(i),
 		vai1 => vemvai1 (i+1),
-		soma => result (i)
+		resultado => resultado(i)
 	);
 end generate;
 
