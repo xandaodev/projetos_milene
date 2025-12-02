@@ -138,19 +138,19 @@ end component;
 		DebugPalavra : out std_logic_vector(31 downto 0));
 end component;
 --somador completo
-	component somador_completo is
+	--component somador_completo is
+	--port(
+	--A, B, vem1 : in std_logic;
+	--vai1, resultado : out std_logic
+	--);
+--end component;
+--somador completo
+	component somador_extra2 is	--mexeu aq depois de dar certo
 	port(
-	A, B, vem1 : in std_logic;
-	vai1, resultado : out std_logic
+	A, B : in std_logic_vector(31 downto 0);
+	resultado : out std_logic_vector (31 downto 0)
 	);
 end component;
---somador completo
---	component somador_completo is
---	port(
---	A, B, vem1 : in std_logic;
---	vai1, resultado : out std_logic
---	);
---end component;
 --deslocador_2
 	component deslocador_2 is
     port(
@@ -360,13 +360,13 @@ begin
 
 	--port map somador A
 	-- somador_A is somador_completo port map(
-	somador_A : ula_32 port map(
-		a => saidaPC,                 
-	    b => X"00000004",             
-	    Ainverte => '0', 
-		 Binverte => '0', 
-	    op => "10",                    
-	    result => saidaSomadorA
+	somador_A : somador_extra2 port map(
+		 A => saidaPC,                 
+	    B => X"00000004",             
+	    --Ainverte => '0', 
+		 --Binverte => '0', 
+	    --op => "10",                    
+	    resultado => saidaSomadorA
 		--zero => ?
 		);
 
@@ -386,13 +386,13 @@ begin
 
 	--port map somador B
 	--somador_B is somador_completo port map(
-	somador_B_ULA: ula_32 port map(
-		a => saidaSomadorA, -- fio 21
-		b => saidaDeslocA_somadorB, -- fio 23
-		Ainverte => '0',
-    	Binverte => '0',
-		op => "10", -- codigo da soma
-		result => saidaSomadorB_muxD
+	somador_B_ULA: somador_extra2 port map(
+		A => saidaSomadorA, -- fio 21
+		B => saidaDeslocA_somadorB, -- fio 23
+		--Ainverte => '0',
+    	--Binverte => '0',
+		--op => "10", -- codigo da soma
+		resultado => saidaSomadorB_muxD
 		-- zero => ??
 		);
 
