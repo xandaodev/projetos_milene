@@ -103,7 +103,7 @@ end component;
         saida_32   : out std_logic_vector (31 downto 0)
     );
 end component;
---uc_ula
+--
 	component uc_ula is
     port(
     ALU_op : in std_logic_vector (1 downto 0);
@@ -284,7 +284,7 @@ begin
 		);
 
 	-- port map unidade de controla da ula
-	UC_ula : uc_ula port map(
+	UC_ulaa : uc_ula port map(
 		--ALU_op => saidaUC_UCula, --fio 12
 		ALU_op => ALU_op_control, -- mudei aqui, n sei se ta certo
 		operacao => saidaUCula_ULA, -- fio 13, obs: na imagemd e caminho da dados fala "mais de 1 sinal"
