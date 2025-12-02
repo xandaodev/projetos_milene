@@ -61,6 +61,7 @@ architecture Behavioral of ula_32 is
    
 signal vaivem: std_logic_vector(31 downto 0);--mudei aqui tmb
 signal or_result : std_logic; -- novo : sinal para a saida da porta or
+signal result_int : std_logic_vector(31 downto 0);--mudei aqui tmb
 begin
 
 --PRIMEIRA ULA
@@ -76,7 +77,7 @@ ula_0: ula1bit port map(
     less => vaivem(31),
    
     vai1_ula => vaivem(0),
-    resultado_ula => result(0)
+    resultado_ula => result_int(0) -- mudei, antes tava so result(0)
 );
 
 --ULAS INTERMEDIARIAS
@@ -94,7 +95,7 @@ gen_ulas : for i in 1 to 30 generate
       less => '0',
 
       vai1_ula => vaivem(i),
-      resultado_ula => result(i)
+      resultado_ula => result_int(i) -- mudei, antes tava so result(i)
     );
     end generate;
     
@@ -111,16 +112,19 @@ ula_31: ula1bit port map(
     less => '0',
    
     set_ula => vaivem(31),	--só muda isso
-    resultado_ula => result(31)
+    resultado_ula => result_int(31) -- mudei, antes tava so result(31)
 );
 
 --RESULTADO FINAL
 resultado_or_32: porta_or_32 port map(
-  e => result,
+  e => result_int, -- aqui era so result
   saida => or_result
 );
 --alexandre mudanças
 zero <= not or_result;
+
+--atribuindo o signal : 
+result <= result_int;
 
 
 end Behavioral;
