@@ -32,8 +32,10 @@ use IEEE.NUMERIC_STD.ALL;
 entity xandinho is
 port(
 	clk, inicializar : in std_logic;
-	debugEndereco : in std_logic_vector (9 downto 2);
-	debugPalavra : out std_logic_vector (9 downto 2)
+	--debugEndereco : in std_logic_vector (9 downto 2);
+	--debugPalavra : out std_logic_vector (9 downto 2)
+	debugEndereco : in std_logic_vector (31 downto 0);
+	debugPalavra : out std_logic_vector (31 downto 0)
 );
 end xandinho;
 
@@ -415,4 +417,3 @@ begin
 
 	
 end Behavioral;
-
