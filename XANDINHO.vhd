@@ -346,8 +346,8 @@ begin
 		Endereco => saidaULA, -- fio 15
 		EscreverMem => saidaUC_memWrite, -- fio 16
 		--DebugEndereco => debugEndereco,
-		DebugEndereco => debugEndereco,
-		DebugPalavra => debugPalavra
+		DebugEndereco => debugEndereco--,
+		--DebugPalavra => debugPalavra
 		);
 
 	--port map mux c
@@ -416,5 +416,6 @@ begin
 		saida_mux_2_32  => saidaMuxE_pc -- fio 29
 		);
 
-	
+debugPalavra(0) <= saidaUC_muxB;	
 end Behavioral;
+
