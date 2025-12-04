@@ -33,7 +33,7 @@ entity decod_5_32 is
 port(
 	e_decod : in std_logic_vector(4 downto 0);
 	sel : in std_logic;
-	resultado_decod : out std_logic_vector(31 downto 0)--alexandre  - mudei aqui
+	resultado_decod : out std_logic_vector(0 to 31)-- mudei aqui
 );
 end decod_5_32;
 
@@ -81,7 +81,7 @@ gen_decods0 : for i in 0 to 3 generate
 			e(0) => e_decod(0),
 			e(1) => e_decod(1),
 			--resultado_4 => resultado_decod(4*i to 4*i+3)
-			resultado_4 => resultado_decod(4*i+3 downto 4*i) -- alexandre - mudança necessaria devido a outras nudanças
+			resultado_4 => resultado_decod(4*i to 4*i+3) -- mudança necessaria devido a outras nudanças
 );
 end generate;
 
@@ -91,7 +91,7 @@ gen_decods1 : for i in 0 to 3 generate
 			e(0) => e_decod(0),
 			e(1) => e_decod(1),
 			--resultado_4 => resultado_decod(4*i+16 to 4*i+19)
-			resultado_4 => resultado_decod(4*i+19 downto 4*i+16) -- alexandre - mudança necessaria devido a outras nudanças
+			resultado_4 => resultado_decod(4*i+16 to 4*i+19 ) -- mudança necessaria devido a outras nudanças
 );
 end generate;
 
