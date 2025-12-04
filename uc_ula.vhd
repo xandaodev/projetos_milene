@@ -88,7 +88,7 @@ begin
         elsif ALU_op = "01" then
             Ainverte <= '0';
             Binverte <= '1';
-            --operacao <= "xx";
+            operacao <= "10";
 
     end if;
     end process;
