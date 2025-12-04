@@ -63,15 +63,15 @@ architecture Behavioral of banco_registradores is
 
     component mux32x32 is --aqui tava o mux_32, mas na verdade o que vamos usar é o que a millene postou, mux32x32
         port(
-            E : in tipo_vetor_de_palavras(31 downto 0); -- alexandre - mudei pra downto
+            E : in tipo_vetor_de_palavras(0 to 31); -- alexandre - mudei pra downto
             Sel : in std_logic_vector(4 downto 0);
             Saida : out tipo_palavra
         );
     end component;
 
 --FIOS
-signal saida_decod : std_logic_vector (31 downto 0);--saida dos decods, entra nos enables -- mudei
-signal saida_32regs : tipo_vetor_de_palavras (31 downto 0); -- saida dos regs, entra nos muxes -- mudei down to 
+signal saida_decod : std_logic_vector (0 to 31);--saida dos decods, entra nos enables -- mudei
+signal saida_32regs : tipo_vetor_de_palavras (0 to 31); -- saida dos regs, entra nos muxes -- mudei down to 
 
 begin
 
@@ -84,7 +84,16 @@ decod: decod_5_32 port map (
 
 --SEGUNDA coluna - 32 registradores
 
-gen_registradores : for i in 0 to 31 generate
+inst_reg0 : registrador_32 port map(
+		  clk => clk, -- conectei os clocks
+        preset => '0',
+        clear =>'1',
+        enable => saida_decod(0),
+        e_reg => dadoEscrita,
+        saida_reg => saida_32regs(0) -- aqui tava saida_32_regs
+);
+
+gen_registradores : for i in 1 to 31 generate
     inst_reg : registrador_32 port map(
 		  clk => clk, -- conectei os clocks
         preset => '0',
