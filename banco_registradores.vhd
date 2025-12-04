@@ -1,119 +1,108 @@
-----------------------------------------------------------------------------------
+--------------------------------------------------------------------------------
 -- Company: 
--- Engineer: Xandão e Xandona
+-- Engineer:
+--
+-- Create Date:   15:19:37 12/04/2025
+-- Design Name:   
+-- Module Name:   /export/convidado/XANDINHOO/banco_registradores_tb.vhd
+-- Project Name:  XANDINHOO
+-- Target Device:  
+-- Tool versions:  
+-- Description:   
 -- 
--- Create Date:    14:54:58 11/04/2025 
--- Design Name: 
--- Module Name:    banco_registradores - Behavioral 
--- Project Name: 
--- Target Devices: 
--- Tool versions: 
--- Description: 
---
--- Dependencies: 
---
--- Revision: 
+-- VHDL Test Bench Created by ISE for module: banco_registradores
+-- 
+-- Dependencies:
+-- 
+-- Revision:
 -- Revision 0.01 - File Created
--- Additional Comments: 
+-- Additional Comments:
 --
-----------------------------------------------------------------------------------
-library IEEE;
-use IEEE.STD_LOGIC_1164.ALL;
-use work.tipo.all; --atualizacoes, pesquisei aqui e parece que tem que ter essa biblioteca tipo pra funcionar
-
+-- Notes: 
+-- This testbench has been automatically generated using types std_logic and
+-- std_logic_vector for the ports of the unit under test.  Xilinx recommends
+-- that these types always be used for the top-level I/O of a design in order
+-- to guarantee that the testbench will bind correctly to the post-implementation 
+-- simulation model.
+--------------------------------------------------------------------------------
+LIBRARY ieee;
+USE ieee.std_logic_1164.ALL;
+ 
 -- Uncomment the following library declaration if using
 -- arithmetic functions with Signed or Unsigned values
---use IEEE.NUMERIC_STD.ALL;
-
--- Uncomment the following library declaration if instantiating
--- any Xilinx primitives in this code.
---library UNISIM;
---use UNISIM.VComponents.all;
-
-entity banco_registradores is
-    port(
-        clk, escreverReg : in std_logic;
-        dadoEscrita : in std_logic_vector (31 downto 0); -- alexandre - mudei pra down to 
-        endEscrita : in std_logic_vector (4 downto 0); -- mudei
-
-        endL1 : in std_logic_vector(4 downto 0);
-        endL2 : in std_logic_vector(4 downto 0);
-
-        dadoL1 : out std_logic_vector(31 downto 0); 
-        dadoL2 : out std_logic_vector(31 downto 0)
-    );
-end banco_registradores;
-
-architecture Behavioral of banco_registradores is
-    component decod_5_32 is
-        port(
-            e_decod : in std_logic_vector(4 downto 0);  -- mudei pra down to 
-            sel : in std_logic;
-            resultado_decod : out std_logic_vector(31 downto 0) -- alexandre - mudei pra downto
+--USE ieee.numeric_std.ALL;
+ 
+ENTITY banco_registradores_tb IS
+END banco_registradores_tb;
+ 
+ARCHITECTURE behavior OF banco_registradores_tb IS 
+ 
+    -- Component Declaration for the Unit Under Test (UUT)
+ 
+    COMPONENT banco_registradores
+    PORT(
+         clk : IN  std_logic;
+         escreverReg : IN  std_logic;
+         dadoEscrita : IN  std_logic_vector(31 downto 0);
+         endEscrita : IN  std_logic_vector(4 downto 0);
+         endL1 : IN  std_logic_vector(4 downto 0);
+         endL2 : IN  std_logic_vector(4 downto 0);
+         dadoL1 : OUT  std_logic_vector(31 downto 0);
+         dadoL2 : OUT  std_logic_vector(31 downto 0)
         );
-    end component;
+    END COMPONENT;
+    
 
-    component registrador_32 is
-        port(
-            e_reg : in std_logic_vector (31 downto 0);--mudei
-            clk, preset, clear, enable : in std_logic;
-            saida_reg : out std_logic_vector (31 downto 0)--mudei
+   --Inputs
+   signal clk : std_logic := '0';
+   signal escreverReg : std_logic := '0';
+   signal dadoEscrita : std_logic_vector(31 downto 0) := (others => '0');
+   signal endEscrita : std_logic_vector(4 downto 0) := (others => '0');
+   signal endL1 : std_logic_vector(4 downto 0) := (others => '0');
+   signal endL2 : std_logic_vector(4 downto 0) := (others => '0');
+
+ 	--Outputs
+   signal dadoL1 : std_logic_vector(31 downto 0);
+   signal dadoL2 : std_logic_vector(31 downto 0);
+
+   -- Clock period definitions
+   constant clk_period : time := 10 ns;
+ 
+BEGIN
+ 
+	-- Instantiate the Unit Under Test (UUT)
+   uut: banco_registradores PORT MAP (
+          clk => clk,
+          escreverReg => escreverReg,
+          dadoEscrita => dadoEscrita,
+          endEscrita => endEscrita,
+          endL1 => endL1,
+          endL2 => endL2,
+          dadoL1 => dadoL1,
+          dadoL2 => dadoL2
         );
-    end component;
 
-    component mux32x32 is --aqui tava o mux_32, mas na verdade o que vamos usar é o que a millene postou, mux32x32
-        port(
-            E : in tipo_vetor_de_palavras(31 downto 0); -- alexandre - mudei pra downto
-            Sel : in std_logic_vector(4 downto 0);
-            Saida : out tipo_palavra
-        );
-    end component;
+   -- Clock process definitions
+   clk_process :process
+   begin
+		clk <= '0';
+		wait for clk_period/2;
+		clk <= '1';
+		wait for clk_period/2;
+   end process;
+ 
 
---FIOS
-signal saida_decod : std_logic_vector (31 downto 0);--saida dos decods, entra nos enables -- mudei
-signal saida_32regs : tipo_vetor_de_palavras (31 downto 0); -- saida dos regs, entra nos muxes -- mudei down to 
+   -- Stimulus process
+   stim_proc: process
+   begin		
+      -- hold reset state for 100 ns.
+      wait for 100 ns;	
 
-begin
+      wait for clk_period*10;
 
---PRIMEIRA coluna
-decod: decod_5_32 port map (
-    e_decod => endEscrita,
-    sel => escreverReg,
-    resultado_decod => saida_decod
-);
+      -- insert stimulus here 
 
---SEGUNDA coluna - 32 registradores
+      wait;
+   end process;
 
-gen_registradores : for i in 0 to 31 generate
-    inst_reg : registrador_32 port map(
-		  clk => clk, -- conectei os clocks
-        preset => '0',
-        clear =>'0',
-        enable => saida_decod(i),
-        e_reg => dadoEscrita,
-        saida_reg => saida_32regs(i) -- aqui tava saida_32_regs
-);
-    end generate;
-
--- TERCEIRA coluna,  muxes
-muxL1 : mux32x32 port map(
-    E => saida_32regs,
-    Sel => endL1,
-    Saida => dadoL1
-);
-
-muxL2 : mux32x32 port map(
-    E => saida_32regs, -- aqui tava saida_32_regs
-    Sel => endL2,
-    Saida => dadoL2
-);
-        
-
-
-end Behavioral;
-
-
-
-
-
-
+END;
