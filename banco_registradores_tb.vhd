@@ -8,14 +8,14 @@
 -- Project Name: Testbench para banco_registradores
 -- Target Devices:
 -- Description: Teste funcional do Banco de Registradores, incluindo loop
--- para escrita e leitura de todos os 32 registradores. (Versão sem to_string)
+-- para escrita e leitura de todos os 32 registradores. (Versão mais robusta para ISE)
 --
 -- Dependencies: banco_registradores, tipo.all
 --
 ----------------------------------------------------------------------------------
 library IEEE;
 use IEEE.STD_LOGIC_1164.ALL;
-use IEEE.NUMERIC_STD.ALL; -- Necessário para to_unsigned e to_integer
+use IEEE.NUMERIC_STD.ALL; -- ESSENCIAL para to_unsigned e to_integer
 use work.tipo.all;
 
 entity banco_registradores_tb is
@@ -24,7 +24,7 @@ end banco_registradores_tb;
 
 architecture Behavioral of banco_registradores_tb is
 
-    -- Componente a ser testado
+    -- Componente a ser testado (DUT - Device Under Test)
     component banco_registradores is
         port(
             clk, escreverReg : in std_logic;
@@ -39,23 +39,25 @@ architecture Behavioral of banco_registradores_tb is
         );
     end component;
 
-    -- Sinais de interconexão (portas do DUT)
+    -- Sinais de interconexão
     signal clk_s, escreverReg_s : std_logic := '0';
     signal dadoEscrita_s : std_logic_vector (31 downto 0) := (others => '0');
     signal endEscrita_s : std_logic_vector (4 downto 0) := (others => '0');
 
     signal endL1_s : std_logic_vector(4 downto 0) := (others => '0');
-    signal endL2_s : std_logic_vector(4 downto 0) := (others => '0';
+    signal endL2_s : std_logic_vector(4 downto 0) := (others => '0');
 
     signal dadoL1_s : std_logic_vector(31 downto 0);
     signal dadoL2_s : std_logic_vector(31 downto 0);
 
-    -- Constantes para o clock
+    -- Constantes
     constant T_CLK : time := 10 ns;
+    -- Constante base de 32 bits para o valor de teste (0xAA000000)
+    constant C_BASE_DATA : std_logic_vector(31 downto 0) := X"AA000000";
 
 begin
 
-    -- Instanciação da Unidade Sob Teste (DUT)
+    -- Instanciação da Unidade Sob Teste
     DUT : banco_registradores
         port map(
             clk => clk_s,
@@ -81,70 +83,73 @@ begin
 
     -- Processo Principal de Teste
     TEST_PROCESS : process
-        -- Variável para o valor a ser escrito/verificado
-        variable v_dado : std_logic_vector(31 downto 0);
-        -- Constante base para o valor de teste (ex: X"AA000000")
-        constant C_BASE_DATA : std_logic_vector(31 downto 0) := X"AA000000";
+        -- Variável para armazenar o valor esperado e o índice
+        variable v_dado_index_32 : std_logic_vector(31 downto 0);
+        variable v_index_5 : std_logic_vector(4 downto 0);
     begin
-        -- 1. Inicialização (Reset implícito)
+        report "--- INICIANDO TESTE ---" severity NOTE;
+
+        -- 1. Inicialização
         escreverReg_s <= '0';
         wait for 2 * T_CLK;
 
         -- 2. Loop de Escrita em Todos os Registradores (R0 a R31)
-        report "--- INICIANDO TESTE DE ESCRITA ---" severity NOTE;
+        report "--- ESCRITA EM REGISTRADORES (R0 A R31) ---" severity NOTE;
 
         for i in 0 to 31 loop
-            -- Configura o endereço de escrita (R_i)
-            endEscrita_s <= std_logic_vector(to_unsigned(i, 5));
+            -- a) Endereço de Escrita (5 bits)
+            v_index_5 := std_logic_vector(to_unsigned(i, 5));
+            endEscrita_s <= v_index_5;
 
-            -- Configura o dado a ser escrito: C_BASE_DATA | índice do registrador
-            v_dado := C_BASE_DATA or std_logic_vector(to_unsigned(i, 32));
-            dadoEscrita_s <= v_dado;
+            -- b) Dado de Escrita (32 bits): C_BASE_DATA OR índice
+            -- O índice (i) é convertido para 32 bits, garantindo que apenas os 5 bits LSBs sejam alterados.
+            v_dado_index_32 := std_logic_vector(to_unsigned(i, 32));
+            dadoEscrita_s <= C_BASE_DATA or v_dado_index_32;
 
-            -- Ativa a escrita
+            -- c) Escrita no Clock
             escreverReg_s <= '1';
-            wait until rising_edge(clk_s); -- Sobe o clock para escrita
-            escreverReg_s <= '0'; -- Desativa a escrita
+            wait until rising_edge(clk_s);
+            escreverReg_s <= '0';
 
-            report "Escreveu R" & integer'image(i) & ". Dado (Hex): AA0000xx" severity NOTE;
+            report "Escrita em R" & integer'image(i) & " concluída. Endereço (Bin): " & v_index_5 severity NOTE;
         end loop;
 
-        wait for T_CLK;
+        wait for 2 * T_CLK;
 
         -- 3. Loop de Leitura e Verificação
-        report "--- INICIANDO TESTE DE LEITURA E VERIFICACAO ---" severity NOTE;
+        report "--- LEITURA E VERIFICACAO ---" severity NOTE;
 
         for i in 0 to 31 loop
-            -- Configura os endereços de leitura
-            endL1_s <= std_logic_vector(to_unsigned(i, 5));
-            endL2_s <= std_logic_vector(to_unsigned(i, 5));
+            -- a) Endereços de Leitura
+            v_index_5 := std_logic_vector(to_unsigned(i, 5));
+            endL1_s <= v_index_5;
+            endL2_s <= v_index_5;
 
-            -- Valor esperado (calculado dinamicamente)
-            v_dado := C_BASE_DATA or std_logic_vector(to_unsigned(i, 32));
+            -- b) Valor Esperado
+            v_dado_index_32 := C_BASE_DATA or std_logic_vector(to_unsigned(i, 32));
 
-            -- Espera um ciclo para a leitura se propagar (combinação do mux)
+            -- c) Espera para Leitura
             wait for T_CLK / 2;
 
-            -- Verifica se o dado lido em L1 corresponde ao valor esperado
-            if dadoL1_s = v_dado then
-                report "SUCESSO: R" & integer'image(i) & " lido em L1. Esperado (Hex): AA0000" & integer'image(i) severity NOTE;
+            -- d) Verificação L1
+            if dadoL1_s = v_dado_index_32 then
+                report "SUCESSO: R" & integer'image(i) & " lido em L1." severity NOTE;
             else
-                report "ERRO: R" & integer'image(i) & " lido em L1. Valor lido é diferente do esperado." severity ERROR;
+                report "ERRO na leitura L1 de R" & integer'image(i) & ". Esperado (Hex): AA0000" & integer'image(i) severity ERROR;
             end if;
 
-            -- Verifica se o dado lido em L2 corresponde ao valor esperado
-            if dadoL2_s = v_dado then
-                report "SUCESSO: R" & integer'image(i) & " lido em L2. Esperado (Hex): AA0000" & integer'image(i) severity NOTE;
+            -- e) Verificação L2
+            if dadoL2_s = v_dado_index_32 then
+                report "SUCESSO: R" & integer'image(i) & " lido em L2." severity NOTE;
             else
-                report "ERRO: R" & integer'image(i) & " lido em L2. Valor lido é diferente do esperado." severity ERROR;
+                report "ERRO na leitura L2 de R" & integer'image(i) & ". Esperado (Hex): AA0000" & integer'image(i) severity ERROR;
             end if;
 
         end loop;
 
-        -- 4. Finalização do Teste
-        report "--- TESTE CONCLUIDO ---" severity NOTE;
-        wait; -- Suspende o processo para sempre
+        -- 4. Finalização
+        report "--- TESTE CONCLUIDO. Verifique o console ou a forma de onda (waveform) ---" severity NOTE;
+        wait;
     end process TEST_PROCESS;
 
 end Behavioral;
-                                                      --elefanet
