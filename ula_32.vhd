@@ -32,9 +32,9 @@ use IEEE.STD_LOGIC_1164.ALL;
 entity ula_32 is
 	port(
 		a : in std_logic_vector (31 downto 0); -- mudei pra downto
-        b : in std_logic_vector (31 downto 0); -- mudei pra downto
+      b : in std_logic_vector (31 downto 0); -- mudei pra downto
 		Ainverte, Binverte : in std_logic;
-		op : in std_logic_vector(1 downto 0);--alexandre - corrigi auqi pra um vetor de 2 
+		op : in std_logic_vector(1 downto 0);--corrigi auqi pra um vetor de 2 
 		result : out std_logic_vector (31 downto 0); -- mudei pra downto
 		zero : out std_logic
 	);
@@ -46,7 +46,7 @@ architecture Behavioral of ula_32 is
 	component ula1bit is
 		port(
 			A_ula, B_ula, vem1_ula, less, Ainverte, Binverte : in std_logic;
-			op_ula : in std_logic_vector(1 downto 0); -- alexandre - corrigido para 2 bits
+			op_ula : in std_logic_vector(1 downto 0); -- corrigido para 2 bits
 			vai1_ula, resultado_ula, set_ula : out std_logic
 		);
 	end component;
@@ -110,6 +110,8 @@ ula_31: ula1bit port map(
     A_ula => a(31),
     B_ula => b(31),
     less => '0',
+	 
+	 --vai1_ula
    
     set_ula => vaivem(31),	--só muda isso
     resultado_ula => result_int(31) -- mudei, antes tava so result(31)
