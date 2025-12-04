@@ -34,10 +34,10 @@ begin
     process(clear, preset, clk)
     begin
 
-        if preset = '0' then
+        if preset = '1' then
             n <= '1';
 
-        elsif clear = '0' then
+        elsif clear = '1' then
             n <= '0';
 
         elsif rising_edge(clk) then
