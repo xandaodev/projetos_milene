@@ -51,7 +51,7 @@ component ffd_borda_subida is
 begin
 
 --primeiros ffds
-gen_ffds : for i in 0 to 9 generate
+gen_ffds : for i in 31 downto 23 generate
 	ffds : ffd_borda_subida port map(	
 		clear => ini,
 		preset => '0',
@@ -67,15 +67,15 @@ end generate;
 ffd_meio : ffd_borda_subida port map(
 	clear => '0',
 	preset => ini,
-	D => entrada(10),
+	D => entrada(22),
 	enable_ffd => '1',
 	clk => clk,
-	Q => saida(10)
+	Q => saida(22)
 );
 
 --ultimos ffds
 
-gen2_ffds : for i in 11 to 31 generate
+gen2_ffds : for i in 21 downto 0 generate
 	ffds2 : ffd_borda_subida port map(	
 		clear => ini,
 		preset => '0',
