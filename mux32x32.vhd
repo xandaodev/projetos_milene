@@ -18,7 +18,7 @@ architecture arq of mux32x32 is
             --E : in std_logic_vector(0 to 31);
             --Sel : in std_logic_vector(4 downto 0);
             --Saida : out std_logic
-			e_mux_32 : in std_logic_vector(0 to 31);	--mudamos pros nomes certos no codigo todo
+				e_mux_32 : in std_logic_vector(0 to 31);
             sel : in std_logic_vector(4 downto 0);
             saida_mux_32 : out std_logic
         );
