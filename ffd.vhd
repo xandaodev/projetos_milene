@@ -29,29 +29,27 @@ entity ffd is
 end ffd;
 
 architecture Behavioral of ffd is
-    signal n : std_logic := '0';
-begin
+    begin
     process(clear, preset, clk)
+	 variable n : std_logic;
     begin
 
-        if preset = '0' then
-            n <= '1';
+        if preset = '1' then
+            n := '1';
 
-        elsif clear = '0' then
-            n <= '0';
+        elsif clear = '1' then
+            n := '0';
 
         elsif falling_edge(clk) then
             
             if enable_ffd = '1' then
-                n <= D;
+                n := D;
             end if;
         
         end if;
-
-    end process;
-
     Q  <= n;
     Qb <= not n;
+    end process;
 
-end Behavioral;
-
+ 
+	 end Behavioral;
