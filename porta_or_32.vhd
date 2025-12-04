@@ -31,7 +31,7 @@ use IEEE.STD_LOGIC_1164.ALL;
 
 entity porta_or_32 is
 	port(
-		e : in std_logic_vector (31 downto 0); -- alexandrei - mudei pra downto 0
+		e : in std_logic_vector (31 downto 0); -- mudei pra downto 0
 		saida : out std_logic
 	);
 end porta_or_32;
