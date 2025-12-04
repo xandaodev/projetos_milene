@@ -32,16 +32,16 @@ use IEEE.STD_LOGIC_1164.ALL;
 entity mux_32 is
     port(
         e_mux_32 : in std_logic_vector (0 to 31);
-        sel : in std_logic_vector (0 to 4);
+        sel : in std_logic_vector (4 downto 0);
         saida_mux_32 : out std_logic
     );
 end mux_32;
 
 architecture Behavioral of mux_32 is
-    component mux4_vector is
+    component mux4 is
         port(
             e : in std_logic_vector (0 to 3);
-            op: in std_logic_vector (0 to 1);
+            op: in std_logic_vector (1 downto 0);
             resultado : out std_logic
         );
     end component;
@@ -64,7 +64,7 @@ begin
 --PRIMEIRA COLUNA
 --primeiro bloco de mux da primeira coluna
 gen_bloco0 : for i in 0 to 3 generate   --são 4 mux
-    bloco0 : mux4_vector port map(
+    bloco0 : mux4 port map(
         e(0) => e_mux_32(4*i),
         e(1) => e_mux_32(4*i+1),
         e(2) => e_mux_32(4*i+2),
@@ -79,7 +79,7 @@ end generate;
 
 --segundo bloco de mux da primeira coluna
 gen_bloco1 : for i in 0 to 3 generate
-    bloco1 : mux4_vector port map(
+    bloco1 : mux4 port map(
         e(0) => e_mux_32(4*i+16),
         e(1) => e_mux_32(4*i+17),
         e(2) => e_mux_32(4*i+18),
@@ -94,7 +94,7 @@ end generate;
 
 --SEGUNDA COLUNA
 --primeiro mux
-mux0 : mux4_vector port map(
+mux0 : mux4 port map(
     e(0) => saida_bloco0_mux(0),
     e(1) => saida_bloco0_mux(1),
     e(2) => saida_bloco0_mux(2),
@@ -106,7 +106,7 @@ mux0 : mux4_vector port map(
     resultado => saida_mux0
 );
 
-mux1 : mux4_vector port map(
+mux1 : mux4 port map(
     e(0) => saida_bloco1_mux(0),
     e(1) => saida_bloco1_mux(1),
     e(2) => saida_bloco1_mux(2),
