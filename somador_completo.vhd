@@ -58,7 +58,7 @@ m1 : somador port map(
 m2: somador port map(
 	A => s1,
 	B => vem1,
-	saida => s3,
+	saida => resultado,
 	vai1 => s4
 );
 vai1 <= s2 or s4;
