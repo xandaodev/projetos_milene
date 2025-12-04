@@ -1,109 +1,154 @@
---------------------------------------------------------------------------------
--- Company: 
--- Engineer:
+----------------------------------------------------------------------------------
+-- Company:
+-- Engineer: Gerado por Gemini
 --
--- Create Date:   15:19:37 12/04/2025
--- Design Name:   
--- Module Name:   /export/convidado/XANDINHOO/banco_registradores_tb.vhd
--- Project Name:  XANDINHOO
--- Target Device:  
--- Tool versions:  
--- Description:   
--- 
--- VHDL Test Bench Created by ISE for module: banco_registradores
--- 
--- Dependencies:
--- 
+-- Create Date: 14:54:58 11/04/2025
+-- Design Name:
+-- Module Name: tb_banco_registradores - Behavioral
+-- Project Name: Testbench para banco_registradores
+-- Target Devices:
+-- Tool versions:
+-- Description: Teste funcional do Banco de Registradores, incluindo loop
+-- para escrita e leitura de todos os 32 registradores.
+--
+-- Dependencies: banco_registradores, tipo.all (para tipo_palavra e tipo_vetor_de_palavras)
+--
 -- Revision:
 -- Revision 0.01 - File Created
 -- Additional Comments:
 --
--- Notes: 
--- This testbench has been automatically generated using types std_logic and
--- std_logic_vector for the ports of the unit under test.  Xilinx recommends
--- that these types always be used for the top-level I/O of a design in order
--- to guarantee that the testbench will bind correctly to the post-implementation 
--- simulation model.
---------------------------------------------------------------------------------
-LIBRARY ieee;
-USE ieee.std_logic_1164.ALL;
- 
--- Uncomment the following library declaration if using
--- arithmetic functions with Signed or Unsigned values
---USE ieee.numeric_std.ALL;
- 
-ENTITY banco_registradores_tb IS
-END banco_registradores_tb;
- 
-ARCHITECTURE behavior OF banco_registradores_tb IS 
- 
-    -- Component Declaration for the Unit Under Test (UUT)
- 
-    COMPONENT banco_registradores
-    PORT(
-         clk : IN  std_logic;
-         escreverReg : IN  std_logic;
-         dadoEscrita : IN  std_logic_vector(31 downto 0);
-         endEscrita : IN  std_logic_vector(4 downto 0);
-         endL1 : IN  std_logic_vector(4 downto 0);
-         endL2 : IN  std_logic_vector(4 downto 0);
-         dadoL1 : OUT  std_logic_vector(31 downto 0);
-         dadoL2 : OUT  std_logic_vector(31 downto 0)
+----------------------------------------------------------------------------------
+library IEEE;
+use IEEE.STD_LOGIC_1164.ALL;
+use IEEE.NUMERIC_STD.ALL; -- Necessário para to_unsigned e to_integer
+use work.tipo.all;
+
+entity tb_banco_registradores is
+-- Não possui portas
+end tb_banco_registradores;
+
+architecture Behavioral of tb_banco_registradores is
+
+    -- Componente a ser testado
+    component banco_registradores is
+        port(
+            clk, escreverReg : in std_logic;
+            dadoEscrita : in std_logic_vector (31 downto 0);
+            endEscrita : in std_logic_vector (4 downto 0);
+
+            endL1 : in std_logic_vector(4 downto 0);
+            endL2 : in std_logic_vector(4 downto 0);
+
+            dadoL1 : out std_logic_vector(31 downto 0);
+            dadoL2 : out std_logic_vector(31 downto 0)
         );
-    END COMPONENT;
-    
+    end component;
 
-   --Inputs
-   signal clk : std_logic := '0';
-   signal escreverReg : std_logic := '0';
-   signal dadoEscrita : std_logic_vector(31 downto 0) := (others => '0');
-   signal endEscrita : std_logic_vector(4 downto 0) := (others => '0');
-   signal endL1 : std_logic_vector(4 downto 0) := (others => '0');
-   signal endL2 : std_logic_vector(4 downto 0) := (others => '0');
+    -- Sinais de interconexão (portas do DUT)
+    signal clk_s, escreverReg_s : std_logic := '0';
+    signal dadoEscrita_s : std_logic_vector (31 downto 0) := (others => '0');
+    signal endEscrita_s : std_logic_vector (4 downto 0) := (others => '0');
 
- 	--Outputs
-   signal dadoL1 : std_logic_vector(31 downto 0);
-   signal dadoL2 : std_logic_vector(31 downto 0);
+    signal endL1_s : std_logic_vector(4 downto 0) := (others => '0');
+    signal endL2_s : std_logic_vector(4 downto 0) := (others => '0');
 
-   -- Clock period definitions
-   constant clk_period : time := 10 ns;
- 
-BEGIN
- 
-	-- Instantiate the Unit Under Test (UUT)
-   uut: banco_registradores PORT MAP (
-          clk => clk,
-          escreverReg => escreverReg,
-          dadoEscrita => dadoEscrita,
-          endEscrita => endEscrita,
-          endL1 => endL1,
-          endL2 => endL2,
-          dadoL1 => dadoL1,
-          dadoL2 => dadoL2
+    signal dadoL1_s : std_logic_vector(31 downto 0);
+    signal dadoL2_s : std_logic_vector(31 downto 0);
+
+    -- Constantes para o clock
+    constant T_CLK : time := 10 ns;
+
+begin
+
+    -- Instanciação da Unidade Sob Teste (DUT)
+    DUT : banco_registradores
+        port map(
+            clk => clk_s,
+            escreverReg => escreverReg_s,
+            dadoEscrita => dadoEscrita_s,
+            endEscrita => endEscrita_s,
+            endL1 => endL1_s,
+            endL2 => endL2_s,
+            dadoL1 => dadoL1_s,
+            dadoL2 => dadoL2_s
         );
 
-   -- Clock process definitions
-   clk_process :process
-   begin
-		clk <= '0';
-		wait for clk_period/2;
-		clk <= '1';
-		wait for clk_period/2;
-   end process;
- 
+    -- Processo de Geração de Clock
+    CLOCK_GEN : process
+    begin
+        loop
+            clk_s <= '0';
+            wait for T_CLK / 2;
+            clk_s <= '1';
+            wait for T_CLK / 2;
+        end loop;
+    end process CLOCK_GEN;
 
-   -- Stimulus process
-   stim_proc: process
-   begin		
-      -- hold reset state for 100 ns.
-      wait for 100 ns;	
-		dadoEscrita <= "00000000000000000000000000000001";
-		endEscrita <= '1';
-      wait for clk_period*10;
+    -- Processo Principal de Teste
+    TEST_PROCESS : process
+        -- Variável para o valor a ser escrito/verificado
+        variable v_dado : std_logic_vector(31 downto 0);
+    begin
+        -- 1. Inicialização (Reset implícito)
+        escreverReg_s <= '0';
+        wait for 2 * T_CLK;
 
-      -- insert stimulus here 
+        -- 2. Loop de Escrita em Todos os Registradores (R0 a R31)
+        -- Escreve um valor único para cada registrador (índice + 0xAA000000)
+        report "--- INICIANDO TESTE DE ESCRITA ---" severity NOTE;
 
-      wait;
-   end process;
+        for i in 0 to 31 loop
+            -- Configura o endereço de escrita (R_i)
+            endEscrita_s <= std_logic_vector(to_unsigned(i, 5));
 
-END;
+            -- Configura o dado a ser escrito
+            v_dado := std_logic_vector(to_unsigned(i, 32)) or X"AA000000";
+            dadoEscrita_s <= v_dado;
+
+            -- Ativa a escrita
+            escreverReg_s <= '1';
+            wait until rising_edge(clk_s); -- Sobe o clock para escrita
+            escreverReg_s <= '0'; -- Desativa a escrita
+
+            report "Escreveu R" & integer'image(i) & " com o valor: " & to_string(v_dado) severity NOTE;
+        end loop;
+
+        wait for T_CLK;
+
+        -- 3. Loop de Leitura e Verificação
+        report "--- INICIANDO TESTE DE LEITURA E VERIFICACAO ---" severity NOTE;
+        -- Lê o valor de cada registrador através das portas L1 e L2
+
+        for i in 0 to 31 loop
+            -- Configura os endereços de leitura
+            endL1_s <= std_logic_vector(to_unsigned(i, 5));
+            endL2_s <= std_logic_vector(to_unsigned(i, 5));
+
+            -- Valor esperado
+            v_dado := std_logic_vector(to_unsigned(i, 32)) or X"AA000000";
+
+            -- Espera um ciclo para a leitura se propagar
+            wait for T_CLK;
+
+            -- Verifica se o dado lido em L1 corresponde ao valor esperado
+            if dadoL1_s = v_dado then
+                report "SUCESSO: R" & integer'image(i) & " lido em L1. Valor: " & to_string(dadoL1_s) severity NOTE;
+            else
+                report "ERRO: R" & integer'image(i) & " lido em L1. Esperado: " & to_string(v_dado) & " - Obtido: " & to_string(dadoL1_s) severity ERROR;
+            end if;
+
+            -- Verifica se o dado lido em L2 corresponde ao valor esperado
+            if dadoL2_s = v_dado then
+                report "SUCESSO: R" & integer'image(i) & " lido em L2. Valor: " & to_string(dadoL2_s) severity NOTE;
+            else
+                report "ERRO: R" & integer'image(i) & " lido em L2. Esperado: " & to_string(v_dado) & " - Obtido: " & to_string(dadoL2_s) severity ERROR;
+            end if;
+
+        end loop;
+
+        -- 4. Finalização do Teste
+        report "--- TESTE CONCLUIDO ---" severity NOTE;
+        wait; -- Suspende o processo para sempre
+    end process TEST_PROCESS;
+
+end Behavioral;
