@@ -12,7 +12,7 @@ use IEEE.STD_LOGIC_1164.ALL;
 entity mux4 is
 	port(
 		e : in std_logic_vector (0 to 3);
-        op: in std_logic_vector (0 to 1);
+        op: in std_logic_vector (0 to 1); -- talvez esse sinal op aqui tenha que ser (1 downto 0)! comentario feito por alexandre 06/12/2025
 		resultado : out std_logic
 	);
 end mux4;
@@ -49,3 +49,4 @@ begin
 
 
 end Behavioral;
+
