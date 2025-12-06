@@ -54,17 +54,17 @@ begin
                 elsif funct = "100100" then --and
                     Ainverte <= '0';
                     Binverte <= '0';
-                    operacao <= "00";
+                    operacao <= "00"; -- talvez aqui seja 01 em evz de 00
 
                 elsif funct = "100111" then --nor
                     Ainverte <= '1';
                     Binverte <= '1';
-                    operacao <= "00";
+                    operacao <= "00"; -- talvez aqui seja 01 em vez de 00
 
                 elsif funct = "100101" then --or
                     Ainverte <= '0';
                     Binverte <= '0';
-                    operacao <= "01";
+                    operacao <= "01"; -- talvez aqui seja 00 em vez de 01
 
                 elsif funct = "101010" then --slt
                     Ainverte <= '0';
