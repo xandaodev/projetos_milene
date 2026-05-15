@@ -1,6 +1,6 @@
 Sinal | Nome
 ---|---
-1 | saidaPC
+1 | saidaPC 
 2 | saidaMemoInstru
 3 | saidaUC_regDst
 4 | saidaMuxA_bancoReg
@@ -19,7 +19,7 @@ Sinal | Nome
 17 | saidaDataMem_muxC
 18 | saidaUC_memRead
 19 | saidaUC_memtoReg
-20 | xxxx
+20 | xxxxx
 21 | saidaSomadorA
 22 | saidaDeslocB_muxE
 23 | saidaDeslocA_somadorB
